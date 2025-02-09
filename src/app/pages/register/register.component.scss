@@ -1,0 +1,14 @@
+:host ::ng-deep .p-inputicon {
+    color: #8B5E35
+}
+
+:host ::ng-deep .p-inputtext:enabled:focus {
+    border: 1px solid #8B5E35;
+}
+
+:host ::ng-deep .p-inputtext {
+    color: #090f41;
+    background-color: #fff;
+    padding-block: 12px;
+    border: none;
+}

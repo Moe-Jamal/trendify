@@ -1,0 +1,158 @@
+<footer class="py-sec-p bg-[#2E2E2E] text-white">
+  <div class="container mx-auto px-3">
+    <div
+      class="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-5 gap-12 xl:gap-40 justify-center"
+    >
+      <div class="lg:col-span-3 xl:col-span-2">
+        <h2 class="text-[24px] mb-4">Trendify</h2>
+        <p class="text-gray-400 text-sm mb-4">
+          Join Our newsletter to stay up to date on feautres and releases.
+        </p>
+        <div class="group flex items-center sm:gap-3 mb-3 flex-col sm:flex-row">
+          <input
+            type="email"
+            class="p-3 flex-1 rounded-lg outline-none border border-main-color w-full mb-2 sm:w-auto sm:mb-0 text-main-color"
+            placeholder="Enter your email"
+          />
+          <button
+            class="bg-main-color text-white py-3 px-6 border border-white rounded-lg w-full sm:w-auto hover:bg-secondry-color transition-colors duration-300"
+          >
+            Subscribe
+          </button>
+        </div>
+        <p class="text-xs">
+          By Subscribeing you agree to with our Privacy Policy and provide
+          consent to receive updates from our company
+        </p>
+      </div>
+      @if (isDesktop) {
+      <ul class="about-us flex flex-col gap-y-4">
+        <h4 class="font-semibold">About Us</h4>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Shipping</a></li>
+      </ul>
+      <ul class="customer flex flex-col gap-y-4 text-nowrap">
+        <h4 class="font-semibold">Customer Support</h4>
+        <li><a href="#">Affiliates</a></li>
+        <li><a href="#">Apply Pay Payments</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Returns Policy</a></li>
+        <li><a href="#">Returns</a></li>
+      </ul>
+      <ul class="follow flex flex-col gap-y-4 text-nowrap">
+        <h4 class="font-semibold">Follow Us</h4>
+        <li>
+          <a href="#"><i class="fa-brands fa-facebook-f me-4"></i>Facebook</a>
+        </li>
+        <li>
+          <a href="#"><i class="fa-brands fa-instagram me-4"></i>Instagram</a>
+        </li>
+        <li>
+          <a href="#"><i class="fa-brands fa-twitter me-4"></i>Twitter</a>
+        </li>
+        <li>
+          <a href="#"><i class="fa-brands fa-linkedin me-4"></i>Linkedin</a>
+        </li>
+      </ul>
+      } @else {
+      <div
+        class="card flex justify-content-center border-t-[1px] border-[#e2e8f0]"
+      >
+        <p-accordion [multiple]="true" class="w-full bg-[#2E2E2E]">
+          <p-accordion-panel value="0">
+            <p-accordion-header>
+              <span>About Us</span>
+              <ng-template #toggleicon let-active="active">
+                @if (active) {
+                <i class="fa-solid fa-minus"></i>
+                } @else {
+                <i class="fa-solid fa-plus"></i>
+                }
+              </ng-template></p-accordion-header
+            >
+            <p-accordion-content>
+              <ul class="about-us flex flex-col gap-y-4">
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Returns</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Shipping</a></li>
+              </ul>
+            </p-accordion-content>
+          </p-accordion-panel>
+          <p-accordion-panel value="1">
+            <p-accordion-header class="uppercase font-bold"
+              ><span>Customer Support</span>
+              <ng-template #toggleicon let-active="active">
+                @if (active) {
+                <i class="fa-solid fa-minus"></i>
+                } @else {
+                <i class="fa-solid fa-plus"></i>
+                }
+              </ng-template></p-accordion-header
+            >
+            <p-accordion-content>
+              <ul class="customer flex flex-col gap-y-4 text-nowrap">
+                <li><a href="#">Affiliates</a></li>
+                <li><a href="#">Apply Pay Payments</a></li>
+                <li><a href="#">Returns</a></li>
+                <li><a href="#">Returns Policy</a></li>
+                <li><a href="#">Returns</a></li>
+              </ul>
+            </p-accordion-content>
+          </p-accordion-panel>
+          <p-accordion-panel value="2">
+            <p-accordion-header class="uppercase font-bold"
+              ><span>Follow Us</span>
+              <ng-template #toggleicon let-active="active">
+                @if (active) {
+                <i class="fa-solid fa-minus"></i>
+                } @else {
+                <i class="fa-solid fa-plus"></i>
+                }
+              </ng-template></p-accordion-header
+            >
+            <p-accordion-content>
+              <ul class="follow flex flex-col gap-y-4 text-nowrap">
+                <li>
+                  <a href="#"
+                    ><i class="fa-brands fa-facebook-f me-4"></i>Facebook</a
+                  >
+                </li>
+                <li>
+                  <a href="#"
+                    ><i class="fa-brands fa-instagram me-4"></i>Instagram</a
+                  >
+                </li>
+                <li>
+                  <a href="#"
+                    ><i class="fa-brands fa-twitter me-4"></i>Twitter</a
+                  >
+                </li>
+                <li>
+                  <a href="#"
+                    ><i class="fa-brands fa-linkedin me-4"></i>Linkedin</a
+                  >
+                </li>
+              </ul>
+            </p-accordion-content>
+          </p-accordion-panel>
+        </p-accordion>
+      </div>
+      }
+    </div>
+    <div
+      class="flex justify-between items-center mt-10 flex-col sm:flex-row gap-y-3"
+    >
+      <p class="text-xs">&copy; 2025 Trendify. All right reserved</p>
+      <ul class="flex gap-3 sm:gap-8 order-first sm:order-last text-nowrap">
+        <li><a href="#" class="text-xs">Privacy Policy</a></li>
+        <li><a href="#" class="text-xs">Terms of Services</a></li>
+        <li><a href="#" class="text-xs">Cookies Setting</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>

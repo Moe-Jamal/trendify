@@ -1,0 +1,19 @@
+swiper-container::part(pagination) {
+    bottom: 15%;
+}
+
+swiper-container::part(bullet-active) {
+    background-color: #8B5E35;
+    width: 32px;
+    height: 4px;
+    border-radius: 9px;
+    opacity: 1;
+}
+
+swiper-container::part(bullet) {
+    background-color: #D0DAEE;
+    width: 24px;
+    height: 4px;
+    border-radius: 9px;
+    opacity: 1;
+}

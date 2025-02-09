@@ -1,0 +1,11 @@
+.p-accordionheader
+ {
+    color: white !important;
+    background-color: #2E2E2E !important;
+}
+
+:host ::ng-deep .p-accordioncontent-content {
+    color: white !important;
+    background-color: #2E2E2E !important;
+  }
+

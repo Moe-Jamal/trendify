@@ -1,0 +1,107 @@
+<section class="register">
+  <div class="flex min-h-screen">
+    <div
+      class="w-full md:w-1/2 bg-bg-color max-h-screen overflow-y-auto py-16 flex items-center"
+    >
+      <div class="w-full px-5 md:px-0 md:w-[75%] mx-auto">
+        <h1 class="text-[2rem] text-text-color">Welcome Back!</h1>
+        <p class="text-secText-color mb-5">
+          Please log in or sign up to continue using our app.
+        </p>
+        <form
+          class="text-text-color"
+          [formGroup]="loginForm"
+          (ngSubmit)="submitForm()"
+        >
+          <div class="flex flex-col gap-2 mb-5">
+            @let emailControl = loginForm.get('email');
+            <label for="email" class="text-[1.125rem]">E-mail</label>
+            <p-iconfield>
+              <p-inputicon
+                class="fa-solid fa-envelope fa-bounce text-secondry-color"
+              ></p-inputicon>
+              <input
+                type="text"
+                pInputText
+                placeholder="E-mail"
+                class="w-full"
+                formControlName="email"
+              />
+            </p-iconfield>
+            @if (emailControl?.errors && emailControl?.touched) { @if
+            (emailControl?.getError('required')) {
+            <p-message severity="error">This field is required.</p-message>
+            } @else if (emailControl?.getError('pattern')) {
+            <p-message severity="error">Please enter a valid email</p-message>
+            } }
+          </div>
+          <div class="flex flex-col gap-2 mb-5">
+            @let passwordControl = loginForm.get('password');
+            <label for="password" class="text-[1.125rem]">Password</label>
+            <p-iconfield>
+              <p-inputicon
+                class="fa-solid fa-lock fa-bounce text-secondry-color"
+              ></p-inputicon>
+              <input
+                [type]="isPasswordVisible ? 'text' : 'password'"
+                pInputText
+                placeholder="xxxxxxxxxxxx"
+                class="w-full"
+                formControlName="password"
+              />
+              <p-inputicon
+                class="fa-solid text-secondry-color cursor-pointer"
+                (click)="showHidePassword()"
+                [class.fa-eye-slash]="!isPasswordVisible"
+                [class.fa-eye]="isPasswordVisible"
+              ></p-inputicon>
+            </p-iconfield>
+            @if (passwordControl?.errors && passwordControl?.touched) { @if
+            (passwordControl?.getError('required')) {
+            <p-message severity="error">This field is required.</p-message>
+            } @else if (passwordControl?.getError('pattern')) {
+            <p-message severity="error"
+              >Password Must start with an uppercase letter and be at least 8
+              characters long.</p-message
+            >
+            } }
+          </div>
+          <div class="flex justify-between">
+            <div class="flex items-center mb-3">
+              <input
+                type="checkbox"
+                class="border-main-color accent-main-color"
+              />
+              <span class="text-sm ms-2 text-text-color">Remember Me</span>
+            </div>
+            <a href="#" class="underline text-sm text-main-color"
+              >Forgot Password?</a
+            >
+          </div>
+
+          <button
+            type="submit"
+            [disabled]="isLoading"
+            class="py-3 bg-main-color mt-3 mb-3 text-white w-full rounded-full hover:bg-secondry-color transition-colors duration-300"
+          >
+            @if (isLoading) {
+            <i class="fa-solid fa-spinner fa-spin ms-2"></i>
+            }@else {
+            <span>Log in</span>
+            }
+          </button>
+          <p-toast position="top-right"></p-toast>
+        </form>
+        <p class="mt-5 pb-5 text-center text-secText-color">
+          Don't have an account ?
+          <a [routerLink]="['/register']" class="underline text-main-color"
+            >Sing up</a
+          >
+        </p>
+      </div>
+    </div>
+    <div class="hidden md:block bg-red-900 h-screen w-1/2">
+      <app-auth-slider></app-auth-slider>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,191 @@
+<section class="register">
+  <div class="flex min-h-screen">
+    <div
+      class="w-full md:w-1/2 bg-bg-color max-h-screen overflow-y-auto py-16 flex items-center"
+    >
+      <div class="w-full px-5 md:px-0 md:w-[75%] mx-auto h-full">
+        <h1 class="text-[2rem] text-text-color">Create A Account</h1>
+        <p class="text-secText-color mb-5">Create a new account</p>
+        <form
+          class="text-text-color"
+          [formGroup]="registerForm"
+          (ngSubmit)="submitForm()"
+        >
+          <div class="flex flex-col gap-2 mb-5">
+            @let nameControl = registerForm.get('name');
+            <label for="name" class="text-[1.125rem]">User Name</label>
+            <p-iconfield>
+              <p-inputicon
+                class="fa-solid fa-user fa-bounce text-secondry-color"
+              ></p-inputicon>
+              <input
+                type="text"
+                pInputText
+                placeholder="UserName"
+                class="w-full"
+                formControlName="name"
+              />
+            </p-iconfield>
+            @if (nameControl?.errors && nameControl?.touched) { @if
+            (nameControl?.getError('required')) {
+            <p-message severity="error">This field is required.</p-message>
+            } @else if (nameControl?.getError('minlength')) {
+            <p-message severity="error"
+              >Minimum length should be 3 characters.</p-message
+            >
+            } @else if (nameControl?.getError('maxlength')) {
+            <p-message severity="error"
+              >Maximum length should be 30 characters.</p-message
+            >
+            } }
+          </div>
+          <div class="flex flex-col gap-2 mb-5">
+            @let emailControl = registerForm.get('email');
+            <label for="email" class="text-[1.125rem]">E-mail</label>
+            <p-iconfield>
+              <p-inputicon
+                class="fa-solid fa-envelope fa-bounce text-secondry-color"
+              ></p-inputicon>
+              <input
+                type="text"
+                pInputText
+                placeholder="E-mail"
+                class="w-full"
+                formControlName="email"
+              />
+            </p-iconfield>
+            @if (emailControl?.errors && emailControl?.touched) { @if
+            (emailControl?.getError('required')) {
+            <p-message severity="error">This field is required.</p-message>
+            } @else if (emailControl?.getError('pattern')) {
+            <p-message severity="error">Please enter a valid email</p-message>
+            } }
+          </div>
+          <div class="flex flex-col gap-2 mb-5">
+            @let passwordControl = registerForm.get('password');
+            <label for="password" class="text-[1.125rem]">Password</label>
+            <p-iconfield>
+              <p-inputicon
+                class="fa-solid fa-lock fa-bounce text-secondry-color"
+              ></p-inputicon>
+              <input
+                [type]="isPasswordVisible ? 'text' : 'password'"
+                pInputText
+                placeholder="xxxxxxxxxxxx"
+                class="w-full"
+                formControlName="password"
+              />
+              <p-inputicon
+                class="fa-solid text-secondry-color cursor-pointer"
+                (click)="showHidePassword()"
+                [class.fa-eye-slash]="!isPasswordVisible"
+                [class.fa-eye]="isPasswordVisible"
+              ></p-inputicon>
+            </p-iconfield>
+            @if (passwordControl?.errors && passwordControl?.touched) { @if
+            (passwordControl?.getError('required')) {
+            <p-message severity="error">This field is required.</p-message>
+            } @else if (passwordControl?.getError('pattern')) {
+            <p-message severity="error"
+              >Password Must start with an uppercase letter and be at least 8
+              characters long.</p-message
+            >
+            } }
+          </div>
+          <div class="flex flex-col gap-2 mb-5">
+            <label for="rePassword" class="text-[1.125rem]"
+              >Confirm Password</label
+            >
+            <p-iconfield>
+              <p-inputicon
+                class="fa-solid fa-lock fa-bounce text-secondry-color"
+              ></p-inputicon>
+              <input
+                [type]="isPasswordVisible ? 'text' : 'password'"
+                pInputText
+                placeholder="xxxxxxxxxxxx"
+                class="w-full"
+                formControlName="rePassword"
+              />
+              <p-inputicon
+                class="fa-solid text-secondry-color cursor-pointer"
+                (click)="showHidePassword()"
+                [class.fa-eye-slash]="!isPasswordVisible"
+                [class.fa-eye]="isPasswordVisible"
+              ></p-inputicon>
+            </p-iconfield>
+            @if (registerForm.getError('mismatch') &&
+            registerForm.get('rePassword')?.touched) {
+            <p-message severity="error">Passwords do not match.</p-message>
+            }
+          </div>
+          <div class="flex flex-col gap-2 mb-5">
+            @let phoneControl = registerForm.get('phone');
+            <label for="phone" class="text-[1.125rem]">Phone</label>
+            <p-iconfield>
+              <p-inputicon
+                class="fa-solid fa-mobile fa-bounce text-secondry-color"
+              ></p-inputicon>
+              <input
+                type="tel"
+                pInputText
+                placeholder="01023780008"
+                class="w-full"
+                formControlName="phone"
+              />
+            </p-iconfield>
+            @if (phoneControl?.errors && phoneControl?.touched) { @if
+            (phoneControl?.getError('required')) {
+            <p-message severity="error">This field is required.</p-message>
+            } @else if (phoneControl?.getError('pattern')) {
+            <p-message severity="error"
+              >Please Enter Egyption Phone Number</p-message
+            >
+            } }
+          </div>
+          <div class="flex items-center mb-3">
+            <input
+              type="checkbox"
+              class="border-main-color accent-main-color"
+              formControlName="terms"
+            />
+            <span class="text-sm ms-2 text-text-color"
+              >I agree to the
+              <span class="text-main-color underline"
+                >Terms Of Conditions</span
+              ></span
+            >
+          </div>
+          @if (registerForm.get('terms')?.errors &&
+          registerForm.get('terms')?.touched) {
+          <p-message severity="error"
+            >Please accept Terms and Conditions.</p-message
+          >
+          }
+
+          <button
+            type="submit"
+            [disabled]="isLoading"
+            class="py-3 bg-main-color mt-3 mb-3 text-white w-full rounded-full hover:bg-secondry-color transition-colors duration-300"
+          >
+            @if (isLoading) {
+            <i class="fa-solid fa-spinner fa-spin ms-2"></i>
+            }@else {
+            <span>Sign Up</span>
+            }
+          </button>
+          <p-toast position="top-right"></p-toast>
+        </form>
+        <p class="mt-5 pb-5 text-center text-secText-color">
+          Already have an account ?
+          <a [routerLink]="['/login']" class="underline text-main-color"
+            >Login</a
+          >
+        </p>
+      </div>
+    </div>
+    <div class="hidden md:block h-screen w-1/2">
+      <app-auth-slider></app-auth-slider>
+    </div>
+  </div>
+</section>
