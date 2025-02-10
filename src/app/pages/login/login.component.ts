@@ -50,7 +50,10 @@ export class LoginComponent {
     ],
     password: [
       null,
-      [Validators.required, Validators.pattern(/^[A-Z]\w{7,}$/)],
+      [
+        Validators.required,
+        Validators.pattern(/^[A-Z][\w!@#$%^&*()\-+=]{7,}$/),
+      ],
     ],
   });
 
@@ -83,7 +86,7 @@ export class LoginComponent {
           console.log(err);
           this.messageService.add({
             severity: 'error',
-            summary: 'Error',
+            summary: 'Login Failed',
             detail: 'Invalid Email or Password',
           });
           this.isLoading = false;

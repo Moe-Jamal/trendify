@@ -60,7 +60,10 @@ export class RegisterComponent {
       ],
       password: [
         null,
-        [Validators.required, Validators.pattern(/^[A-Z]\w{7,}$/)],
+        [
+          Validators.required,
+          Validators.pattern(/^[A-Z][\w!@#$%^&*()\-+=]{7,}$/),
+        ],
       ],
       rePassword: [null],
       phone: [
