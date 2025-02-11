@@ -68,8 +68,9 @@ export class LoginComponent {
       this.isLoading = true;
       this.authService.setLoginData(this.loginForm.value).subscribe({
         next: (res) => {
-          console.log(res);
           if (res.message === 'success') {
+            localStorage.setItem('authToken', res.token);
+            this.authService.saveUserData();
             setTimeout(() => {
               this.router.navigate(['/home']);
             }, 1000);

@@ -89,7 +89,6 @@ export class RegisterComponent {
       console.log(registerData);
       this.authService.setRegisterData(registerData).subscribe({
         next: (res) => {
-          console.log(res);
           if (res.message === 'success') {
             setTimeout(() => {
               this.router.navigate(['/login']);

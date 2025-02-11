@@ -1,13 +1,16 @@
 import { Routes } from '@angular/router';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { authGuard } from './core/guards/auth.guard';
+import { loggedGuard } from './core/guards/logged.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: '',
     component: AuthLayoutComponent,
+    canActivate: [loggedGuard],
     children: [
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
       {
         path: 'login',
         loadComponent: () =>
@@ -22,11 +25,20 @@ export const routes: Routes = [
           ),
         title: 'Register',
       },
+      {
+        path: 'forgetpassword',
+        loadComponent: () =>
+          import('./pages/forget-password/forget-password.component').then(
+            (m) => m.ForgetPasswordComponent
+          ),
+        title: 'Forget Password',
+      },
     ],
   },
   {
     path: '',
     component: MainLayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: 'home',

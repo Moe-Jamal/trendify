@@ -74,7 +74,9 @@
               />
               <span class="text-sm ms-2 text-text-color">Remember Me</span>
             </div>
-            <a href="#" class="underline text-sm text-main-color"
+            <a
+              routerLink="/forgetpassword"
+              class="underline text-sm text-main-color"
               >Forgot Password?</a
             >
           </div>
@@ -85,7 +87,7 @@
             class="py-3 bg-main-color mt-3 mb-3 text-white w-full rounded-full hover:bg-secondry-color transition-colors duration-300"
           >
             @if (isLoading) {
-            <i class="fa-solid fa-spinner fa-spin ms-2"></i>
+            <i class="fa-solid fa-spinner fa-spin"></i>
             }@else {
             <span>Log in</span>
             }
