@@ -89,7 +89,9 @@ export class ForgetPasswordComponent {
   }
 
   sendCode(): void {
-    if (this.userEmail.valid) {
+    if (this.userEmail.invalid) {
+      this.userEmail.markAllAsTouched();
+    } else if (this.userEmail.valid) {
       this.isLoading = true;
       this.authService.setEmailVerify(this.userEmail.value).subscribe({
         next: (res) => {
@@ -105,6 +107,11 @@ export class ForgetPasswordComponent {
           console.log(res);
         },
         error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: err.error.message,
+          });
           this.isLoading = false;
           console.log(err);
         },
@@ -133,7 +140,7 @@ export class ForgetPasswordComponent {
               this.messageService.add({
                 severity: 'error',
                 summary: 'Error',
-                detail: 'Reset code is invalid or has expired',
+                detail: err.error.message,
               });
               this.isLoading = false;
               console.log(err);
@@ -144,7 +151,9 @@ export class ForgetPasswordComponent {
   }
 
   newPassword(): void {
-    if (this.resetPassword.valid) {
+    if (this.resetPassword.invalid) {
+      this.resetPassword.markAllAsTouched();
+    } else if (this.resetPassword.valid) {
       this.isLoading = true;
       this.authService
         .setResetPassword(
@@ -171,7 +180,7 @@ export class ForgetPasswordComponent {
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
-              detail: 'Reset code not verified',
+              detail: err.error.message,
             });
             this.isLoading = false;
           },

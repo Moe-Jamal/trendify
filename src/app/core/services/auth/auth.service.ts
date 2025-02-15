@@ -1,17 +1,19 @@
 import { jwtDecode } from 'jwt-decode';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { IUser } from '../../../shared/interfaces/iuser';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   constructor(private httpClient: HttpClient) {}
+  private readonly router = inject(Router);
 
-  userData: IUser = {} as IUser;
+  userData: IUser | null = {} as IUser;
   setRegisterData(data: object): Observable<any> {
     return this.httpClient.post(
       `${environment.baseUrl}/api/v1/auth/signup`,
@@ -27,8 +29,8 @@ export class AuthService {
   }
 
   saveUserData(): void {
-    if (localStorage.getItem('token')) {
-      this.userData = jwtDecode(localStorage.getItem('token')!);
+    if (localStorage.getItem('authToken')) {
+      this.userData = jwtDecode(localStorage.getItem('authToken')!);
     }
   }
 
@@ -56,5 +58,11 @@ export class AuthService {
         newPassword: userPassword,
       }
     );
+  }
+
+  logout(): void {
+    localStorage.removeItem('authToken');
+    this.userData = null;
+    this.router.navigate(['/login']);
   }
 }

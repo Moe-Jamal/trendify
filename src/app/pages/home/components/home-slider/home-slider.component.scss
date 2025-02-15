@@ -1,0 +1,70 @@
+swiper-container {
+    width: 100%;
+    height: 100%;
+}
+
+swiper-slide {
+    font-size: 18px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.custom-prev,
+.custom-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background-color: #fff;
+    color: #8b5e35;
+    border: 2px solid #8b5e35;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.custom-prev:hover,
+.custom-next:hover {
+    background-color: #8b5e35 ;
+    color: #fff;
+}
+
+swiper-container::part(pagination) {
+    bottom: 0;
+    background: linear-gradient(360deg, #151411 -21.38%, rgba(21, 20, 17, 0) 66.65%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+    padding-block: 20px;
+    
+  }
+  
+  swiper-container::part(bullet) {
+    width: 10px;
+    height: 10px;
+    background-color: #C0C0C0; 
+    opacity: 0.5;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  swiper-container::part(bullet-active) {
+    width: 10px;
+    height: 10px;
+    background-color: #8B5E35;
+    opacity: 1;
+  }
+  
+  

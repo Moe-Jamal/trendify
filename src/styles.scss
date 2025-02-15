@@ -2,8 +2,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "primeicons/primeicons.css";
+
 body {
     font-family: "Poppins", serif;
+}
+@layer components {
+    .main-btn {
+        @apply py-3 bg-main-color mt-3 mb-3 text-white w-full rounded-full hover:bg-secondry-color transition-colors duration-300
+    }
 }
 
 @media (max-width:600px) {
@@ -26,5 +33,56 @@ body {
     
     ::-webkit-scrollbar-track {
         background-color: #9D9DAA;
+    }
+}
+
+//Brand Slider 
+:root {
+    --width: 100px;
+}
+
+@media (min-width: 768px) {
+    :root {
+        --width: 150px;
+    }
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --width: 250px;
+    }
+}
+
+.slider {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    mask-image: linear-gradient(
+        to right, transparent, #000 10% 90%, transparent
+    );
+}
+
+.slider .list {
+    display: flex;
+    will-change: transform;
+    width: calc(var(--width) * 40);
+    animation: autoRun 40s linear infinite;
+}
+
+.slider .list .item {
+    flex: 0 0 var(--width);
+}
+
+.slider:hover .list {
+    animation-play-state: paused !important;
+}
+
+
+@keyframes autoRun {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(calc(-1 * var(--width) * 40)); 
     }
 }

@@ -1,1 +1,86 @@
-<p>navbar works!</p>
+<nav
+  class="fixed flex z-[9999] h-[88px] container max-w-full items-center justify-between shadow-md transition-all duration-300"
+  [class]="{
+    'bg-[rgba(0,0,0,0.1)]': isHomePage && !isScrolled,
+    'shadow-none': isHomePage && !isScrolled,
+    'bg-bg-color': !isHomePage || isScrolled
+  }"
+>
+  <div class="logo">
+    <a routerLink="/home" class="text-[2rem] text-main-color"> Trendify </a>
+  </div>
+  <div class="desktop-links hidden lg:block">
+    <ul class="flex gap-7">
+      @for (link of navLinks; track $index) {
+      <li
+        class="text-[1.125rem] text-secText-color"
+        [class]="{
+          'text-white': isHomePage && !isScrolled
+        }"
+      >
+        <a
+          [routerLink]="link.path"
+          routerLinkActive="text-[#BE7B3D] font-semibold"
+          >{{ link.name }}</a
+        >
+      </li>
+      }
+    </ul>
+  </div>
+  <div class="icons flex gap-[10px] sm:gap-4 items-center">
+    <button class="lg:hidden text-[1.8rem]" (click)="toggleMenu()">
+      <i
+        class="pi"
+        [class]="isMenuOpen ? 'pi-times' : 'pi-bars'"
+        [style]="{ color: isHomePage && !isScrolled ? '#fff' : '#8B5E35' }"
+        style="font-size: 1.5rem"
+      ></i>
+    </button>
+    <a
+      routerLink="/wishlist"
+      class="text-[24px] text-main-color"
+      [class]="{
+        'text-white': isHomePage && !isScrolled
+      }"
+      ><i class="fa-regular fa-heart"></i
+    ></a>
+    <a
+      routerLink="/cart"
+      class="pi pi-shopping-cart text-main-color"
+      style="font-size: 1.5rem"
+      [class]="{
+        'text-white': isHomePage && !isScrolled
+      }"
+    ></a>
+    <div>
+      <p-menu #menu [model]="items" [popup]="true" />
+      <button
+        (click)="menu.toggle($event)"
+        class="pi pi-user text-main-color"
+        [class]="{
+          'text-white': isHomePage && !isScrolled
+        }"
+        style="font-size: 1.5rem"
+      ></button>
+    </div>
+  </div>
+  <div
+    #mobileMenu
+    class="absolute top-full left-0 w-full bg-bg-color overflow-hidden shadow-md transition-all duration-300 ease-in-out"
+    [style]="{ 'max-height': isMenuOpen ? menuHeight + 'px' : '0px' }"
+  >
+    <ul class="flex flex-col text-center py-4 gap-3">
+      @for (link of navLinks; track $index) {
+      <li>
+        <a
+          [routerLink]="link.path"
+          class="text-lg block py-2 text-secText-color"
+          routerLinkActive="!text-[#BE7B3D]"
+          (click)="closeMenu()"
+          >{{ link.name }}</a
+        >
+      </li>
+      }
+    </ul>
+  </div>
+</nav>

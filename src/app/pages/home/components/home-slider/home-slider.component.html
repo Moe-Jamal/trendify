@@ -1,0 +1,43 @@
+<div class="relative h-[500px] overflow-hidden">
+  <swiper-container
+    #swiperContainer
+    pagination='{"clickable": true}'
+    navigation="false"
+    autoplay="true"
+    autoplay-delay="3000"
+  >
+    @for (item of [1,2,3,4]; track $index) {
+    <swiper-slide class="relative">
+      <img src="/images/home-slider.jpg" alt="" />
+      <div class="absolute inset-0 bg-black opacity-60 z-10"></div>
+      <div class="container max-w-full absolute inset-0 z-20">
+        <div
+          class="caption text-white absolute top-1/2 -translate-y-1/2 text-center left-1/2 -translate-x-1/2 md:left-[unset] md:-translate-x-0 md:text-left md:px-16 w-full"
+        >
+          <h2 class="text-[1.5rem] sm:text-[2.75rem] mb-2 sm:mb-1">
+            Upgrade your Style
+          </h2>
+          <p
+            class="sm:text-[2rem] mb-3 sm:mb-6 sm:w-[420px] w-[250px] mx-auto md:mx-[unset]"
+          >
+            up to 50% off on all clothing and accessories!
+          </p>
+          <button class="main-btn w-fit px-8 rounded-md">Shop Now</button>
+        </div>
+      </div>
+    </swiper-slide>
+    }
+  </swiper-container>
+  <button
+    class="custom-prev hidden md:flex left-[10px] sm:left-[20px] md:left-[30px] lg:left-[35px] xl:left-[60px]"
+    (click)="slidePrev()"
+  >
+    <i class="fa-solid fa-chevron-left text-2xl"></i>
+  </button>
+  <button
+    class="custom-next hidden md:flex right-[10px] sm:right-[20px] md:right-[30px] lg:right-[35px] xl:right-[60px]"
+    (click)="slideNext()"
+  >
+    <i class="fa-solid fa-chevron-right text-2xl"></i>
+  </button>
+</div>

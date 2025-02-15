@@ -88,7 +88,7 @@ export class LoginComponent {
           this.messageService.add({
             severity: 'error',
             summary: 'Login Failed',
-            detail: 'Invalid Email or Password',
+            detail: err.error.message,
           });
           this.isLoading = false;
         },

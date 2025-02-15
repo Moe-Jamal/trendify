@@ -1,0 +1,55 @@
+<div class="container max-w-full relative">
+  @if (browserOnly) {
+  <div class="px-10">
+    <swiper-container
+      #swiperContainer
+      loop="true"
+      pagination="false"
+      navigation="false"
+      breakpoints='{
+          "360": { "slidesPerView": 2, "spaceBetween": 10 },
+          "500": { "slidesPerView": 3, "spaceBetween": 20 },
+          "720": { "slidesPerView": 4, "spaceBetween": 20 },
+          "1024": { "slidesPerView": 5, "spaceBetween": 20 },
+          "1280": { "slidesPerView": 6, "spaceBetween": 20 },
+          "1536": { "slidesPerView": 8, "spaceBetween": 20 }
+        }'
+    >
+      @for (cate of categories; track $index) {
+      <swiper-slide class="flex justify-center items-center">
+        <div class="flex flex-col items-center">
+          <div
+            class="w-[100px] h-[100px] md:w-[120px] md:h-[120px] lg:w-[150px] lg:h-[150px]"
+          >
+            <a href="#">
+              <img
+                [src]="cate.image"
+                class="w-full h-full object-cover rounded-full border-2 border-gray-200"
+                alt=""
+              />
+            </a>
+          </div>
+          <h3
+            class="mt-3 md:mt-5 text-sm md:text-base font-semibold text-nowrap"
+          >
+            {{ cate.name }}
+          </h3>
+        </div>
+      </swiper-slide>
+      }
+    </swiper-container>
+  </div>
+  <button
+    class="custom-prev left-[10px] sm:left-[20px] md:left-[30px] lg:left-[35px] xl:left-[60px]"
+    (click)="slidePrev()"
+  >
+    <i class="fa-solid fa-chevron-left text-2xl"></i>
+  </button>
+  <button
+    class="custom-next right-[10px] sm:right-[20px] md:right-[30px] lg:right-[35px] xl:right-[60px]"
+    (click)="slideNext()"
+  >
+    <i class="fa-solid fa-chevron-right text-2xl"></i>
+  </button>
+  }
+</div>

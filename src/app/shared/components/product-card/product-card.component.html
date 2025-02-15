@@ -1,0 +1,50 @@
+<div class="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6 w-full">
+  @for (prod of products | slice : start : (end || products.length) ; track
+  prod.id) {
+  <div class="card bg-white shadow-md rounded-[10px] p-2">
+    <div class="img-holder bg-[#F1F1F1] rounded-[5px] w-full mb-2 relative">
+      <img
+        [src]="prod.imageCover"
+        class="w-full h-[275px] object-contain"
+        [alt]="prod.title"
+      />
+      @if(prod.price && prod.priceAfterDiscount){
+      <div
+        class="bg-main-color w-fit px-2 text-white absolute bottom-5 left-2 rounded-[2.5px]"
+      >
+        <h5 class="text-[1.5rem]">
+          {{ calculateDiscount(prod.price, prod.priceAfterDiscount) }}
+        </h5>
+      </div>
+      }
+    </div>
+    <div class="caption p-2 text-text-color">
+      <h4 class="text-[24px]">{{ prod.title?.split(" ", 2)?.join(" ") }}</h4>
+      <span class="flex items-center mb-1"
+        ><i class="pi pi-star-fill text-[#FFC000] me-2 mb-1"></i>
+        <span>{{ prod.ratingsAverage }}</span>
+        <span class="text-secText-color text-xs ms-1"
+          >({{ prod.ratingsQuantity || "500" }}+)</span
+        ></span
+      >
+      <div class="flex justify-between items-center">
+        <h5 class="text-[20px]">
+          <span class="text-main-color me-2">{{
+            prod.priceAfterDiscount || prod.price + " EGP"
+          }}</span
+          >@if(prod.priceAfterDiscount){
+          <span class="line-through text-secText-color">{{
+            prod.price + " EGP"
+          }}</span>
+          }
+        </h5>
+        <button
+          class="main-btn m-0 p-0 h-[2rem] w-[2rem] rounded-[.3125rem] flex items-center justify-center"
+        >
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+</div>
