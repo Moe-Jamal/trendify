@@ -278,21 +278,11 @@
     <div class="list">
       @for (brand of allBrands; track $index) {
       <div class="item w-[100px] md:w-[150px] lg:w-[250px]">
-        <img
-          [src]="brand.image"
-          [alt]="brand.name"
-          class="w-full"
-          loading="lazy"
-        />
+        <img [src]="brand.image" [alt]="brand.name" class="w-full" />
       </div>
       } @for (brand of allBrands; track $index) {
       <div class="item w-[100px] md:w-[150px] lg:w-[250px]">
-        <img
-          [src]="brand.image"
-          [alt]="brand.name"
-          class="w-full"
-          loading="lazy"
-        />
+        <img [src]="brand.image" [alt]="brand.name" class="w-full" />
       </div>
       }
     </div>
