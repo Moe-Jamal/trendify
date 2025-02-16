@@ -1,7 +1,10 @@
 <div class="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6 w-full">
   @for (prod of products | slice : start : (end || products.length) ; track
   prod.id) {
-  <div class="card bg-white shadow-md rounded-[10px] p-2">
+  <div
+    class="card bg-white shadow-md rounded-[10px] p-2 cursor-pointer"
+    [routerLink]="['/product-details', formatTitle(prod.title!), prod.id]"
+  >
     <div class="img-holder bg-[#F1F1F1] rounded-[5px] w-full mb-2 relative">
       <img
         [src]="prod.imageCover"
@@ -40,6 +43,7 @@
         </h5>
         <button
           class="main-btn m-0 p-0 h-[2rem] w-[2rem] rounded-[.3125rem] flex items-center justify-center"
+          (click)="$event.stopPropagation()"
         >
           <i class="fa-solid fa-plus"></i>
         </button>

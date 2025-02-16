@@ -1,11 +1,5 @@
 <div class="relative h-[500px] overflow-hidden">
-  <swiper-container
-    #swiperContainer
-    pagination='{"clickable": true}'
-    navigation="false"
-    autoplay="true"
-    autoplay-delay="3000"
-  >
+  <swiper-container #swiperContainer init="false">
     @for (item of [1,2,3,4]; track $index) {
     <swiper-slide class="relative">
       <img src="/images/home-slider.jpg" alt="" />

@@ -24,10 +24,15 @@ export class HomeSliderComponent {
   @ViewChild('swiperContainer') swiperContainer!: ElementRef<SwiperContainer>;
 
   ngAfterViewInit() {
-    if (this.browserOnly) {
-      const swiper = this.swiperContainer.nativeElement;
-      swiper.initialize();
-    }
+    const swiperParams = {
+      slidesPerView: 1,
+      pagination: { clickable: true },
+      navigation: false,
+      loop: true,
+      autoplay: { delay: 3000, disableOnInteraction: false },
+    };
+    Object.assign(this.swiperContainer.nativeElement, swiperParams);
+    this.swiperContainer.nativeElement.initialize();
   }
   slidePrev(): void {
     if (this.swiperContainer?.nativeElement?.swiper) {

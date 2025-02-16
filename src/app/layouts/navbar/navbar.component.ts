@@ -27,6 +27,7 @@ export class NavbarComponent {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.isHomePage = this.router.url === '/home';
+        this.isProductPage = this.router.url.includes('/product-details/');
         this.checkScroll();
       }
     });
@@ -37,6 +38,7 @@ export class NavbarComponent {
   userName: string = '';
   isMenuOpen: boolean = false;
   isHomePage: boolean = false;
+  isProductPage: boolean = false;
   isScrolled: boolean = false;
   menuHeight = 0;
 

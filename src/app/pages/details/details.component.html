@@ -1,0 +1,60 @@
+<div class="h-[88px]"></div>
+<div class="card flex justify-center py-8">
+  <p-breadcrumb class="container max-w-full" [model]="items">
+    <ng-template #item let-item>
+      <ng-container *ngIf="item.route; else elseBlock">
+        <a [routerLink]="item.route" class="p-breadcrumb-item-link">
+          <span [ngClass]="[item.icon ? item.icon : '', 'text-color']"></span>
+          <span class="text-main-color font-semibold">{{ item.label }}</span>
+        </a>
+      </ng-container>
+      <ng-template #elseBlock>
+        <span class="text-secText-color truncate">{{
+          item.label.split(" ", 3)?.join(" ")
+        }}</span>
+      </ng-template>
+    </ng-template>
+  </p-breadcrumb>
+</div>
+<section class="product-details">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 container max-w-full">
+    <div class="flex flex-col sm:flex-row gap-6">
+      <div class="product-images w-full sm:w-[75px] order-last sm:order-first">
+        <div
+          class="flex flex-row sm:flex-col gap-3 justify-center sm:justify-start"
+        >
+          @for (image of productDetails.images; track $index ; let i = $index) {
+          <div
+            class="img-holder w-[65px] sm:w-[75px] rounded-2xl border border-main-color"
+          >
+            <img
+              [src]="image"
+              [alt]="productDetails.title"
+              class="rounded-2xl w-full"
+            />
+          </div>
+          }
+        </div>
+      </div>
+      <div class="w-full 2xl:h-[800px] md:h-[800px] lg:h-auto relative">
+        <swiper-container #swiperContainer init="false" class="!w-full !h-full">
+          @for (image of productDetails.images; track $index) {
+          <swiper-slide class="!w-full !h-full">
+            <img
+              [src]="image"
+              [alt]="productDetails.title"
+              class="w-full h-full object-cover"
+          /></swiper-slide>
+          }
+        </swiper-container>
+        <button class="custom-prev left-[15px]" (click)="slidePrev()">
+          <i class="fa-solid fa-chevron-left text-2xl"></i>
+        </button>
+        <button class="custom-next right-[15px]" (click)="slideNext()">
+          <i class="fa-solid fa-chevron-right text-2xl"></i>
+        </button>
+      </div>
+    </div>
+    <div class=""></div>
+  </div>
+</section>

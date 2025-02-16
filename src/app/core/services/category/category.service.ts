@@ -25,6 +25,10 @@ export class CategoryService {
     });
   }
 
+  setGetProductDetails(id: string): Observable<any> {
+    return this.httpClient.get(`${environment.baseUrl}/api/v1/products/${id}`);
+  }
+
   setGetBrands(): Observable<any> {
     return this.httpClient.get(`${environment.baseUrl}/api/v1/brands?limit=40`);
   }

@@ -21,6 +21,10 @@
         <a
           [routerLink]="link.path"
           routerLinkActive="text-[#BE7B3D] font-semibold"
+          [class]="{
+            'text-[#BE7B3D]': isProductPage && link.name === 'Products',
+            'font-semibold': isProductPage && link.name === 'Products'
+          }"
           >{{ link.name }}</a
         >
       </li>
@@ -76,6 +80,10 @@
           [routerLink]="link.path"
           class="text-lg block py-2 text-secText-color"
           routerLinkActive="!text-[#BE7B3D]"
+          [class]="{
+            '!text-[#BE7B3D]': isProductPage && link.name === 'Products',
+            'font-semibold': isProductPage && link.name === 'Products'
+          }"
           (click)="closeMenu()"
           >{{ link.name }}</a
         >

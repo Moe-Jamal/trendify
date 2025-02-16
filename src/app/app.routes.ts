@@ -97,6 +97,15 @@ export const routes: Routes = [
         title: 'Contact-Us',
       },
       {
+        path: 'product-details/:name/:id',
+        loadComponent: () =>
+          import('./pages/details/details.component').then(
+            (m) => m.DetailsComponent
+          ),
+        title: 'Product Details',
+      },
+
+      {
         path: '**',
         loadComponent: () =>
           import('./pages/not-found/not-found.component').then(
