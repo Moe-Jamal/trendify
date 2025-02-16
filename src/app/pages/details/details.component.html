@@ -17,7 +17,7 @@
   </p-breadcrumb>
 </div>
 <section class="product-details">
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 container max-w-full">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 container max-w-full">
     <div class="flex flex-col sm:flex-row gap-6">
       <div class="product-images w-full sm:w-[75px] order-last sm:order-first">
         <div
@@ -47,6 +47,11 @@
           /></swiper-slide>
           }
         </swiper-container>
+        <div
+          class="w-[3.125rem] h-[3.125rem] bg-white border border-main-color absolute top-4 right-4 flex justify-center items-center z-30 rounded-full cursor-pointer"
+        >
+          <i class="pi pi-heart text-main-color" style="font-size: 1.5rem"></i>
+        </div>
         <button class="custom-prev left-[15px]" (click)="slidePrev()">
           <i class="fa-solid fa-chevron-left text-2xl"></i>
         </button>
@@ -55,6 +60,345 @@
         </button>
       </div>
     </div>
-    <div class=""></div>
+    <div class="">
+      <span class="flex items-center mb-1"
+        ><i class="pi pi-star-fill text-[#FFC000] me-2 mb-1"></i>
+        <span class="text-text-color">{{ productDetails.ratingsAverage }}</span>
+        <span class="text-xs ms-1 text-text-color"
+          >({{ productDetails.ratingsQuantity || "500" }}+)</span
+        ></span
+      >
+      <h2
+        class="text-[1.5rem] sm:text-[2rem] text-text-color font-semibold mb-3"
+      >
+        {{ productDetails.title }}
+      </h2>
+      <p class="text-secText-color mb-8">
+        {{ productDetails.description?.split(" ", 6)?.join(" ") + "..." }}
+      </p>
+      <span class="text-text-color text-[1.25rem] font-medium block mb-4">
+        Color :
+        <span class="text-secText-color font-medium">{{ selectedColor }}</span>
+      </span>
+      <div class="flex items-center gap-3 sm:gap-5 mb-8">
+        @for (color of productColor; track $index) {
+        <span
+          class="border border-[#D1D5DB] rounded-full cursor-pointer"
+          [style.background-color]="color.code"
+          (click)="chooseColor(color.name)"
+          [class]="
+            selectedColor === color.name
+              ? ['w-[3rem]', 'h-[3rem]']
+              : ['w-[2.25rem]', 'h-[2.25rem]']
+          "
+        ></span>
+        }
+      </div>
+      <div class="flex justify-between mb-4">
+        <span class="text-text-color text-[1.25rem] font-medium">
+          Size :
+          <span class="text-main-color font-medium">{{ selectedSize }}</span>
+        </span>
+      </div>
+      <div class="flex items-center gap-1 mb-8">
+        @for (size of productSize; track $index) {
+        <span
+          class="px-3 sm:px-4 py-2 border border-[#EAECF0] rounded-lg cursor-pointer text-[#667085] text-sm sm:text-base"
+          (click)="chooseSize(size.name)"
+          [class]="
+            selectedSize === size.name
+              ? ['bg-[#F1F7FA]', 'border-transparent']
+              : ['bg-[#FCFCFD]', 'border-[#EAECF0]']
+          "
+          >{{ size.code }}</span
+        >
+        }
+      </div>
+      <span class="text-text-color font-medium"
+        >Quantity :
+        <span class="text-main-color font-medium">{{
+          productDetails.quantity
+        }}</span></span
+      >
+      <div
+        class="addToCart grid grid-cols-[125px_1fr] sm:grid-cols-[160px_1fr] gap-3 mt-3 mb-8"
+      >
+        <div
+          class="flex items-center bg-white border border-main-color rounded-xl w-full overflow-hidden"
+        >
+          <button
+            class="flex items-center justify-center text-secText-color hover:bg-main-color hover:text-white w-[30%] h-full py-3 transition-colors duration-300"
+          >
+            <i class="pi pi-minus"></i>
+          </button>
+          <span
+            class="cartNum flex items-center justify-center flex-grow h-full text-center py-3"
+          >
+            1
+          </span>
+          <button
+            class="flex items-center justify-center text-secText-color hover:bg-main-color hover:text-white w-[30%] h-full py-3 transition-colors duration-300"
+          >
+            <i class="pi pi-plus"></i>
+          </button>
+        </div>
+        <button
+          class="bg-main-color text-white rounded-xl hover:bg-secondry-color transition-colors duration-300 text-center text-sm sm:text-base max-w-[400px]"
+        >
+          @if(productDetails.priceAfterDiscount){
+          {{ productDetails.priceAfterDiscount }}
+          } @else{{{ productDetails.price }}} EGP •
+          <span class="text-xs sm:text-sm">Add to Cart</span>
+        </button>
+      </div>
+      <div class="delivery flex items-center bg-[#F2F4F7] w-fit px-3 py-2">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15 2V12C15 13.1 14.1 14 13 14H2V7.62C2.73 8.49 3.85003 9.03 5.09003 9C6.10003 8.98 7.01 8.59 7.69 7.94C8 7.68 8.26002 7.34999 8.46002 6.98999C8.82002 6.37999 9.02 5.65997 9 4.90997C8.97 3.73997 8.45001 2.71 7.64001 2H15Z"
+            stroke="#667085"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M22 14V17C22 18.66 20.66 20 19 20H18C18 18.9 17.1 18 16 18C14.9 18 14 18.9 14 20H10C10 18.9 9.1 18 8 18C6.9 18 6 18.9 6 20H5C3.34 20 2 18.66 2 17V14H13C14.1 14 15 13.1 15 12V5H16.84C17.56 5 18.22 5.39001 18.58 6.01001L20.29 9H19C18.45 9 18 9.45 18 10V13C18 13.55 18.45 14 19 14H22Z"
+            stroke="#667085"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M8 22C9.10457 22 10 21.1046 10 20C10 18.8954 9.10457 18 8 18C6.89543 18 6 18.8954 6 20C6 21.1046 6.89543 22 8 22Z"
+            stroke="#667085"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M16 22C17.1046 22 18 21.1046 18 20C18 18.8954 17.1046 18 16 18C14.8954 18 14 18.8954 14 20C14 21.1046 14.8954 22 16 22Z"
+            stroke="#667085"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M22 12V14H19C18.45 14 18 13.55 18 13V10C18 9.45 18.45 9 19 9H20.29L22 12Z"
+            stroke="#667085"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M9 5C9 6.2 8.47001 7.27 7.64001 8C6.93001 8.62 6.01 9 5 9C2.79 9 1 7.21 1 5C1 3.74 1.58 2.61 2.5 1.88C3.19 1.33 4.06 1 5 1C7.21 1 9 2.79 9 5Z"
+            stroke="#667085"
+            stroke-width="1.5"
+            stroke-miterlimit="10"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M5.25 3.75V5.25L4 6"
+            stroke="#667085"
+            stroke-width="1.5"
+            stroke-miterlimit="10"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <p class="ms-2 text-secText-color">
+          Estimated Delivery :
+          <span class="italic text-text-color font-medium text-nowrap"
+            >{{ currentDate | date : "d MMM yyyy" }} -
+            {{ twoDaysLater | date : "d MMM yyyy" }}</span
+          >
+        </p>
+      </div>
+    </div>
   </div>
+  <div class="card flex justify-content-center container max-w-full my-16">
+    <p-accordion class="w-full" value="2">
+      <p-accordion-panel value="0">
+        <p-accordion-header class="!text-text-color !bg-bg-color">
+          <span class="text-[1.5rem] font-medium">Details</span>
+          <ng-template #toggleicon let-active="active">
+            @if (active) {
+            <i class="fa-solid fa-minus"></i>
+            } @else {
+            <i class="fa-solid fa-plus"></i>
+            }
+          </ng-template></p-accordion-header
+        >
+        <p-accordion-content>
+          {{ productDetails.description }}</p-accordion-content
+        >
+      </p-accordion-panel>
+      <p-accordion-panel value="1" [disabled]="true">
+        <p-accordion-header class="!text-text-color !bg-bg-color"
+          ><span class="text-[1.5rem] font-medium">Dimensions</span>
+          <ng-template #toggleicon let-active="active">
+            @if (active) {
+            <i class="fa-solid fa-minus"></i>
+            } @else {
+            <i class="fa-solid fa-plus"></i>
+            }
+          </ng-template></p-accordion-header
+        >
+        <p-accordion-content> </p-accordion-content>
+      </p-accordion-panel>
+      <p-accordion-panel value="2" class="!border-none">
+        <p-accordion-header class="!text-text-color !bg-bg-color"
+          ><span class="text-[1.5rem] font-medium">Reviews</span>
+          <ng-template #toggleicon let-active="active">
+            @if (active) {
+            <i class="fa-solid fa-minus"></i>
+            } @else {
+            <i class="fa-solid fa-plus"></i>
+            }
+          </ng-template></p-accordion-header
+        >
+        <p-accordion-content>
+          <div class="grid grid-col-1 lg:grid-cols-[40%_1fr] gap-6">
+            <div class="rounded-[10px] bg-white p-8 h-fit">
+              <div class="review">
+                <h3 class="text-sm text-text-color font-medium">
+                  Customer Reviews
+                </h3>
+                <span class="text-[2.5rem] text-text-color">{{
+                  productDetails.ratingsAverage
+                }}</span>
+                <div class="stars mb-2">
+                  <i class="fa-solid fa-star text-[#FFC000]"></i>
+                  <i class="fa-solid fa-star text-[#FFC000]"></i>
+                  <i class="fa-solid fa-star text-[#FFC000]"></i>
+                  <i class="fa-solid fa-star text-[#FFC000]"></i>
+                  <i class="fa-solid fa-star text-[#CCCCCC]"></i>
+                </div>
+                <span class="text-secText-color text-xs"
+                  >({{ productDetails.ratingsQuantity }} Reviews)</span
+                >
+              </div>
+              <div class="bars mt-6">
+                <div class="flex gap-2 items-center mt-4">
+                  <span class="text-text-color text-[.625rem] w-[35px]"
+                    >5 stars</span
+                  >
+                  <p-progressbar [value]="85" class="flex-grow" />
+                  <span class="text-text-color text-[.625rem] w-[20px]"
+                    >488</span
+                  >
+                </div>
+                <div class="flex gap-2 items-center mt-4">
+                  <span class="text-text-color text-[.625rem] w-[35px]"
+                    >4 stars</span
+                  >
+                  <p-progressbar [value]="25" class="flex-grow" />
+                  <span class="text-text-color text-[.625rem] w-[20px]"
+                    >74</span
+                  >
+                </div>
+                <div class="flex gap-2 items-center mt-4">
+                  <span class="text-text-color text-[.625rem] w-[35px]"
+                    >3 stars</span
+                  >
+                  <p-progressbar [value]="5" class="flex-grow" />
+                  <span class="text-text-color text-[.625rem] w-[20px]"
+                    >14</span
+                  >
+                </div>
+                <div class="flex gap-2 items-center mt-4">
+                  <span class="text-text-color text-[.625rem] w-[35px]"
+                    >2 stars</span
+                  >
+                  <p-progressbar [value]="0" class="flex-grow" />
+                  <span class="text-secText-color text-[.625rem] w-[20px]"
+                    >0</span
+                  >
+                </div>
+                <div class="flex gap-2 items-center mt-4">
+                  <span class="text-text-color text-[.625rem] w-[35px]"
+                    >1 stars</span
+                  >
+                  <p-progressbar [value]="0" class="flex-grow" />
+                  <span class="text-secText-color text-[.625rem] w-[20px]"
+                    >0</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="rounded-[.625rem] bg-white p-8">
+              <div class="review-1">
+                <span class="text-secText-color font-semibold text-xs">{{
+                  currentDate | date : "MMM d, yyyy"
+                }}</span>
+                <div class="stars my-2">
+                  <i class="fa-solid fa-star text-[#FFC000] text-sm"></i>
+                  <i class="fa-solid fa-star text-[#FFC000] text-sm"></i>
+                  <i class="fa-solid fa-star text-[#FFC000] text-sm"></i>
+                  <i class="fa-solid fa-star text-[#FFC000] text-sm"></i>
+                  <i class="fa-solid fa-star text-[#CCCCCC] text-sm"></i>
+                </div>
+                <div class="flex gap-3 items-center">
+                  <span
+                    class="flex justify-center items-center w-[2.25rem] h-[2.25rem] text-sm text-main-color bg-[#e8dfd7] rounded-full"
+                    >AK</span
+                  >
+                  <p class="text-sm text-text-color font-medium">Alex K.</p>
+                </div>
+                <h5 class="text-secText-color text-sm font-medium my-3">
+                  Senior Analyst
+                </h5>
+                <p class="text-text-color font-medium">
+                  Lorem ipsum dolor sit amet consectetur. Egestas tincidunt sed
+                  laoreet urna id morbi turpis. Est elit egestas
+                </p>
+              </div>
+              <p-divider />
+              <div class="review-2">
+                <span class="text-secText-color font-semibold text-xs">{{
+                  twoDaysLater | date : "MMM d, yyyy"
+                }}</span>
+                <div class="stars my-2">
+                  <i class="fa-solid fa-star text-[#FFC000] text-sm"></i>
+                  <i class="fa-solid fa-star text-[#FFC000] text-sm"></i>
+                  <i class="fa-solid fa-star text-[#FFC000] text-sm"></i>
+                  <i class="fa-solid fa-star text-[#FFC000] text-sm"></i>
+                  <i class="fa-solid fa-star text-[#CCCCCC] text-sm"></i>
+                </div>
+                <div class="flex gap-3 items-center">
+                  <span
+                    class="flex justify-center items-center w-[2.25rem] h-[2.25rem] text-sm text-main-color bg-[#e8dfd7] rounded-full"
+                    >ER</span
+                  >
+                  <p class="text-sm text-text-color font-medium">Emily R.</p>
+                </div>
+                <h5 class="text-secText-color text-sm font-medium my-3">
+                  Front-End Engineer
+                </h5>
+                <p class="text-text-color font-medium">
+                  Lorem ipsum dolor sit amet consectetur. Egestas tincidunt sed
+                  laoreet urna id morbi turpis. Est elit egestas
+                </p>
+              </div>
+            </div>
+          </div>
+        </p-accordion-content>
+      </p-accordion-panel>
+    </p-accordion>
+  </div>
+</section>
+<section class="similer-products pb-[40px] container max-w-full">
+  <h2 class="text-text-color font-semibold mb-5 text-[2rem] sm:text-[2.5rem]">
+    Similar products
+  </h2>
+  <app-product-card
+    [products]="similerProducts"
+    [start]="0"
+    [end]="5"
+  ></app-product-card>
 </section>

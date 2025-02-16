@@ -1,3 +1,4 @@
+import { ProgressBar } from 'primeng/progressbar';
 import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
@@ -14,12 +15,26 @@ import { CategoryService } from '../../core/services/category/category.service';
 import { IProduct } from '../../shared/interfaces/iproduct';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { MenuItem } from 'primeng/api';
-import { isPlatformBrowser, NgClass, NgIf } from '@angular/common';
+import { DatePipe, isPlatformBrowser, NgClass, NgIf } from '@angular/common';
 import { SwiperContainer } from 'swiper/element';
-
+import { ButtonModule } from 'primeng/button';
+import { AccordionModule } from 'primeng/accordion';
+import { DividerModule } from 'primeng/divider';
+import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 @Component({
   selector: 'app-details',
-  imports: [Breadcrumb, RouterModule, NgClass, NgIf],
+  imports: [
+    Breadcrumb,
+    RouterModule,
+    NgClass,
+    NgIf,
+    ButtonModule,
+    DatePipe,
+    AccordionModule,
+    ProgressBar,
+    DividerModule,
+    ProductCardComponent,
+  ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -28,7 +43,9 @@ export class DetailsComponent implements OnInit {
   constructor(
     @Inject(PLATFORM_ID) private platformId: string,
     private renderer: Renderer2
-  ) {}
+  ) {
+    this.twoDaysLater.setDate(this.currentDate.getDate() + 2);
+  }
   @ViewChild('swiperContainer') swiperContainer!: ElementRef<SwiperContainer>;
 
   private readonly activatedRoute = inject(ActivatedRoute);
@@ -38,8 +55,30 @@ export class DetailsComponent implements OnInit {
     return isPlatformBrowser(this.platformId);
   }
   productDetails: IProduct = {};
+  productColor = [
+    { name: 'Blue', code: '#507CCD' },
+    { name: 'White', code: '#fff' },
+    { name: 'Brown', code: '#C88242' },
+    { name: 'Black', code: '#212F39' },
+    { name: 'Soft Clay', code: '#DCB9A8' },
+    { name: 'Misty Olive', code: '#A7B2A3' },
+  ];
+  selectedColor: string = 'Blue';
+  productSize = [
+    { name: 'Extra Small', code: 'XS' },
+    { name: 'Small', code: 'S' },
+    { name: 'Medium', code: 'M' },
+    { name: 'Large', code: 'L' },
+    { name: 'Extra Large', code: 'XL' },
+    { name: 'Double Extra Large', code: 'XXL' },
+    { name: 'Triple Extra Large', code: 'XXXL' },
+  ];
+  selectedSize: string = 'Medium';
+  currentDate: Date = new Date();
+  twoDaysLater: Date = new Date();
+  similerProducts: IProduct[] = [];
   ngOnInit(): void {
-    this.renderer.setStyle(document.body, 'background-color', '#fff');
+    // this.renderer.setStyle(document.body, 'background-color', '#fff');
     this.activatedRoute.paramMap.subscribe({
       next: (p) => {
         let productId = p.get('id');
@@ -47,6 +86,7 @@ export class DetailsComponent implements OnInit {
           next: (res) => {
             this.productDetails = res.data;
             console.log(res.data);
+            this.getSimilerProducts();
             this.items = [
               { label: 'Home', route: '/home' },
               { label: 'Category', route: '/shop' },
@@ -72,6 +112,19 @@ export class DetailsComponent implements OnInit {
     });
   }
 
+  getSimilerProducts(): void {
+    this.categoryService
+      .setGetProducts(this.productDetails.category?._id)
+      .subscribe({
+        next: (res) => {
+          this.similerProducts = res.data;
+          console.log(res.data);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
   slidePrev(): void {
     if (this.swiperContainer?.nativeElement?.swiper) {
       this.swiperContainer?.nativeElement?.swiper.slidePrev();
@@ -84,7 +137,13 @@ export class DetailsComponent implements OnInit {
     }
   }
 
-  ngOnDestroy(): void {
-    this.renderer.setStyle(document.body, 'background-color', '#f6f6f6');
+  chooseColor(color: string): void {
+    this.selectedColor = color;
   }
+  chooseSize(size: string): void {
+    this.selectedSize = size;
+  }
+  // ngOnDestroy(): void {
+  //   this.renderer.setStyle(document.body, 'background-color', '#f6f6f6');
+  // }
 }

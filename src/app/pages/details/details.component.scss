@@ -39,6 +39,22 @@ swiper-slide {
     color: #fff;
 }
 
-:host ::ng-deep body {
-    background-color: #fff;
+
+:host ::ng-deep .p-accordioncontent-content {
+    color: #090f41 !important;
+    background-color: #f6f6f6 !important;
+  }
+:host ::ng-deep .p-accordionpanel {
+    border-color: #9D9DAA !important;
+}
+
+:host ::ng-deep .p-progressbar-value {
+    background-color: #FFC000 !important;
+}
+:host ::ng-deep .p-progressbar-label {
+    display: none !important;
+}
+:host ::ng-deep .p-progressbar {
+    height: 6px !important;
+    border-radius: 10px;
 }
