@@ -93,16 +93,9 @@ export class DetailsComponent implements OnInit {
               { label: this.productDetails.category?.name },
               { label: this.productDetails.title },
             ];
-            const swiperParams = {
-              slidesPerView: 1,
-              navigation: false,
-              loop: true,
-              pagination: false,
-              // observer: true,
-              // observeParents: true,
-            };
-            Object.assign(this.swiperContainer.nativeElement, swiperParams);
-            this.swiperContainer.nativeElement.initialize();
+            if (this.swiperContainer?.nativeElement?.swiper) {
+              this.swiperContainer.nativeElement.swiper.slideTo(0);
+            }
           },
           error: (err) => {
             console.log(err);

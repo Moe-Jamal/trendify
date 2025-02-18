@@ -1,8 +1,10 @@
 import {
   Component,
+  computed,
   ElementRef,
   HostListener,
   inject,
+  Signal,
   ViewChild,
 } from '@angular/core';
 import {
@@ -14,11 +16,18 @@ import {
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { Menu } from 'primeng/menu';
+import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { AuthService } from '../../core/services/auth/auth.service';
-
+import { CartService } from '../../core/services/cart/cart.service';
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, Menu, ButtonModule, RouterLinkActive],
+  imports: [
+    RouterLink,
+    Menu,
+    ButtonModule,
+    RouterLinkActive,
+    OverlayBadgeModule,
+  ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
@@ -33,6 +42,7 @@ export class NavbarComponent {
     });
   }
   private readonly authService = inject(AuthService);
+  private readonly cartService = inject(CartService);
   @ViewChild('mobileMenu') mobileMenu!: ElementRef;
   items: MenuItem[] | undefined;
   userName: string = '';
@@ -41,7 +51,7 @@ export class NavbarComponent {
   isProductPage: boolean = false;
   isScrolled: boolean = false;
   menuHeight = 0;
-
+  countCart: Signal<number> = computed(() => this.cartService.cartNumber());
   navLinks = [
     {
       name: 'Home',
@@ -89,6 +99,14 @@ export class NavbarComponent {
         ],
       },
     ];
+    this.cartService.setGetUserCart().subscribe({
+      next: (res) => {
+        this.cartService.cartNumber.set(res.numOfCartItems);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;

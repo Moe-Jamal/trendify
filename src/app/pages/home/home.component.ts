@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CategoryService } from '../../core/services/category/category.service';
 import { MainTitleComponent } from '../../shared/components/main-title/main-title.component';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
@@ -20,7 +20,6 @@ import { HomeSliderComponent } from './components/home-slider/home-slider.compon
 })
 export class HomeComponent implements OnInit {
   private readonly categoryService = inject(CategoryService);
-  private readonly cdr = inject(ChangeDetectorRef);
   allProducts: IProduct[] = [];
   specificProducts: IProduct[] = [];
   allBrands: IBrand[] = [];

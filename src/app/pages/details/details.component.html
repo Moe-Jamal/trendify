@@ -37,7 +37,13 @@
         </div>
       </div>
       <div class="w-full 2xl:h-[800px] md:h-[800px] lg:h-auto relative">
-        <swiper-container #swiperContainer init="false" class="!w-full !h-full">
+        <swiper-container
+          #swiperContainer
+          slides-per-view="1"
+          loop="false"
+          navigation="false"
+          pagination="false"
+        >
           @for (image of productDetails.images; track $index) {
           <swiper-slide class="!w-full !h-full">
             <img
@@ -221,7 +227,7 @@
       </div>
     </div>
   </div>
-  <div class="card flex justify-content-center container max-w-full my-16">
+  <div class="card flex justify-content-center container max-w-full mt-16 mb-8">
     <p-accordion class="w-full" value="2">
       <p-accordion-panel value="0">
         <p-accordion-header class="!text-text-color !bg-bg-color">

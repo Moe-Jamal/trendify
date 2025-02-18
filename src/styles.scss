@@ -16,6 +16,7 @@ body {
 }
 
 
+
 // scrollbar style
 @media (min-width:768px) {
     ::-webkit-scrollbar {
@@ -37,12 +38,7 @@ body {
     padding: 0 !important;
 }
 
-@media (max-width: 640px) {
-    .p-breadcrumb-list li:last-of-type {
-        display: none;
-    }
-    
-}
+
 @media (max-width:600px) {
     .p-toast {
         max-width: 90%;
@@ -81,7 +77,7 @@ body {
     display: flex;
     will-change: transform;
     width: calc(var(--width) * 40);
-    animation: autoRun 40s linear infinite;
+    animation: autoRun 80s linear infinite;
 }
 
 .slider .list .item {

@@ -39,7 +39,7 @@ swiper-slide {
     color: #fff;
 }
 
-
+// style Accordion
 :host ::ng-deep .p-accordioncontent-content {
     color: #090f41 !important;
     background-color: #f6f6f6 !important;
@@ -57,4 +57,11 @@ swiper-slide {
 :host ::ng-deep .p-progressbar {
     height: 6px !important;
     border-radius: 10px;
+}
+
+@media (max-width: 640px) {
+    :host ::ng-deep .p-breadcrumb-list li:last-of-type {
+        display: none !important;
+    }
+    
 }

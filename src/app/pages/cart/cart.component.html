@@ -1,1 +1,242 @@
-<p>cart works!</p>
+<div class="h-[88px]"></div>
+<div class="card flex justify-center py-8">
+  <p-breadcrumb class="container max-w-full" [model]="items">
+    <ng-template #item let-item>
+      <ng-container *ngIf="item.route; else elseBlock">
+        <a [routerLink]="item.route" class="p-breadcrumb-item-link">
+          <span [ngClass]="[item.icon ? item.icon : '', 'text-color']"></span>
+          <span class="text-main-color font-semibold">{{ item.label }}</span>
+        </a>
+      </ng-container>
+      <ng-template #elseBlock>
+        <span class="text-secText-color truncate">{{ item.label }}</span>
+      </ng-template>
+    </ng-template>
+  </p-breadcrumb>
+</div>
+@if (cartData()) {
+<section class="container max-w-full">
+  <div class="flex justify-between mb-6 items-center">
+    <h2 class="text-text-color text-[40px] flex items-center">
+      Cart
+      <span class="ms-3 text-main-color text-[18px]">
+        {{ cartData()?.numOfCartItems || "0" }} items</span
+      >
+    </h2>
+    @if (cartData()?.numOfCartItems) {
+    <button
+      class="py-3 h-fit px-5 bg-main-color text-white hover:bg-secondry-color duration-300 transition-colors rounded-md text-sm flex items-center"
+      (click)="confirmClearCart()"
+    >
+      Remove All
+      <i class="pi pi-trash ms-2"></i>
+    </button>
+    }
+  </div>
+  <div class="grid grid-col-2 lg:grid-cols-[1fr_350px] gap-5 relative">
+    <div class="flex flex-col rounded-[10px] bg-white h-fit">
+      @for (prod of cartData()?.data?.products; track $index) {
+      <div
+        class="flex items-center gap-3 sm:gap-5 py-3 px-2 sm:p-4"
+        [class]="{ 'border-t': !$first }"
+      >
+        <div class="sm:w-40 w-32 relative">
+          <img [src]="prod.product.imageCover" [alt]="prod.product.title" />
+        </div>
+        <div
+          class="flex justify-between items-center flex-col sm:flex-row gap-4 w-full"
+        >
+          <div
+            class="left flex flex-row sm:flex-col items-center sm:items-start justify-between sm:justify-start w-full gap-2"
+          >
+            <div>
+              <span
+                class="text-secText-color font-medium text-xs sm:text-sm text-nowrap"
+                >{{ prod.product.category.name }}</span
+              >
+              <h4
+                class="text-text-color font-medium text-base sm:text-[1.25rem] mt-1"
+              >
+                {{ prod.product.title.split(" ", 2).join(" ") }}
+              </h4>
+            </div>
+            <div
+              class="bg-surface-100 dark:bg-surface-700 p-1"
+              style="border-radius: 30px"
+            >
+              <div
+                class="bg-surface-0 dark:bg-surface-900 flex items-center gap-2 justify-center py-1 px-2 w-fit"
+                style="
+                  border-radius: 30px;
+                  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.04),
+                    0px 1px 2px 0px rgba(0, 0, 0, 0.06);
+                "
+              >
+                <span
+                  class="text-surface-900 dark:text-surface-0 font-medium text-sm"
+                  >{{ prod.product.ratingsAverage }}</span
+                ><i class="pi pi-star-fill text-yellow-500"></i>
+              </div>
+            </div>
+          </div>
+          <div class="right flex flex-col w-full gap-4">
+            <span class="text-text-color text-[20px] sm:self-end"
+              >{{ prod.price }}EGP</span
+            >
+            <div class="flex justify-between sm:justify-end gap-3">
+              <button
+                class="h-[40px] px-3 border border-main-color text-main-color bg-white hover:bg-main-color hover:text-white transition-colors duration-300 flex justify-center items-center rounded-[10px]"
+                (click)="confirmDeleteItem(prod.product.id)"
+              >
+                <i class="pi pi-trash"></i>
+              </button>
+
+              <div
+                class="flex items-center bg-white border border-main-color rounded-[10px] w-[125px] h-[40px] overflow-hidden"
+              >
+                <button
+                  class="flex items-center justify-center text-text-color hover:bg-main-color hover:text-white w-[30%] h-full py-3 transition-colors duration-300 disabled:text-secText-color"
+                  [disabled]="prod.count <= 1"
+                  (click)="
+                    updateCount(prod.product.id, prod.count - 1, 'decrease')
+                  "
+                >
+                  @if (isDecreasing() === prod.product.id) {
+                  <i class="fa-solid fa-spinner fa-spin"></i>
+                  }@else {
+                  <i class="pi pi-minus"></i>
+                  }
+                </button>
+                <span
+                  class="cartNum flex items-center justify-center flex-grow h-full text-center py-3"
+                >
+                  {{ prod.count }}
+                </span>
+                <button
+                  class="flex items-center justify-center text-text-color hover:bg-main-color hover:text-white w-[30%] h-full py-3 transition-colors duration-300"
+                  (click)="
+                    updateCount(prod.product.id, prod.count + 1, 'increase')
+                  "
+                >
+                  @if (isIncreasing() === prod.product.id) {
+                  <i class="fa-solid fa-spinner fa-spin"></i>
+                  }@else {
+                  <i class="pi pi-plus"></i> }
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      } @empty {
+      <div class="h-[300px] px-10 flex justify-center items-center text-center">
+        <h4>
+          You have currently <span class="font-semibold">0 items</span> in your
+          cart.
+          <a routerLink="/shop"
+            ><span class="underline me-2">Go To Shop</span>
+            <i class="fa-solid fa-arrow-right-long"></i
+          ></a>
+        </h4>
+      </div>
+      }
+    </div>
+    <div
+      class="bg-white border border-[#D1D1D8] rounded-[.625rem] p-[.875rem] sm:p-5 h-fit static lg:sticky top-[100px]"
+    >
+      <h3 class="mb-6 text-text-color text-[24px]">Order Summary</h3>
+      <ul
+        class="flex flex-col gap-5 pb-5 mb-5 border-b border-[#D1D1D8] text-text-color"
+      >
+        <li class="flex justify-between">
+          <span>Price</span>
+          <span>{{ cartData()?.data?.totalCartPrice }}EGP</span>
+        </li>
+        <li class="flex justify-between">
+          <span>Shipping</span>
+          <span class="text-main-color">Free</span>
+        </li>
+        <li class="flex justify-between">
+          <span>Coupon Applied</span>
+          <span>0.00EGP</span>
+        </li>
+      </ul>
+      <ul class="flex flex-col gap-5">
+        <li class="flex justify-between text-text-color">
+          <span class="uppercase">Total</span>
+          <span>{{ cartData()?.data?.totalCartPrice }}EGP</span>
+        </li>
+        <li class="flex justify-between text-text-color">
+          <span>Estimated Delivery by</span>
+          <span>{{ twoDaysLater | date : "d MMM, yyyy" }}</span>
+        </li>
+      </ul>
+      <div
+        class="btn-group p-2 flex items-center rounded-[.625rem] border border-[#C0C0C0] gap-3 my-5"
+      >
+        <input
+          type="text"
+          class="flex-grow outline-none placeholder:text-secText-color"
+          placeholder="Coupon Code"
+        />
+        <button
+          class="text-white px-4 py-2 rounded-[.3125rem] bg-main-color hover:bg-secondry-color duration-300 transition-colors"
+        >
+          Apply
+        </button>
+      </div>
+      <button class="main-btn my-0">Proceed To Checkout</button>
+    </div>
+  </div>
+</section>
+}
+<div class="card flex justify-center">
+  <p-toast />
+  <p-confirmdialog #cd>
+    <ng-template
+      #headless
+      let-message
+      let-onAccept="onAccept"
+      let-onReject="onReject"
+    >
+      <div
+        class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded"
+      >
+        <div
+          class="rounded-full bg-[#ef4444] text-white inline-flex justify-center items-center h-24 w-24 -mt-20"
+        >
+          <i class="pi pi-trash !text-5xl"></i>
+        </div>
+        <span class="font-bold text-2xl block mb-2 mt-6 text-center">{{
+          message.header
+        }}</span>
+        <p class="mb-0">{{ message.message }}</p>
+        <div class="flex items-center gap-2 mt-6">
+          <p-button
+            label="Cancel"
+            variant="outlined"
+            severity="secondary"
+            (click)="onReject()"
+            styleClass="w-32"
+          />
+          <p-button
+            label="Delete"
+            severity="danger"
+            (click)="onAccept()"
+            styleClass="w-32"
+          />
+        </div>
+      </div>
+    </ng-template>
+  </p-confirmdialog>
+</div>
+<section class="similer-products my-16 container max-w-full">
+  <h2 class="text-text-color font-semibold mb-5 text-[2rem] sm:text-[2.5rem]">
+    Similar products
+  </h2>
+  <app-product-card
+    [products]="similerProducts()"
+    [start]="start"
+    [end]="end"
+  ></app-product-card>
+</section>
