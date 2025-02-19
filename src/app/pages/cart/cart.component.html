@@ -40,7 +40,7 @@
         class="flex items-center gap-3 sm:gap-5 py-3 px-2 sm:p-4"
         [class]="{ 'border-t': !$first }"
       >
-        <div class="sm:w-40 w-32 relative">
+        <div class="sm:w-40 max-w-32 relative">
           <img [src]="prod.product.imageCover" [alt]="prod.product.title" />
         </div>
         <div
@@ -142,11 +142,11 @@
       }
     </div>
     <div
-      class="bg-white border border-[#D1D1D8] rounded-[.625rem] p-[.875rem] sm:p-5 h-fit static lg:sticky top-[100px]"
+      class="bg-white border border-[#D1D1D8] rounded-[.625rem] p-[14px] sm:p-5 lg:h-fit static lg:sticky top-[100px]"
     >
       <h3 class="mb-6 text-text-color text-[24px]">Order Summary</h3>
       <ul
-        class="flex flex-col gap-5 pb-5 mb-5 border-b border-[#D1D1D8] text-text-color"
+        class="flex flex-col gap-y-5 pb-5 mb-5 border-b border-[#D1D1D8] text-text-color"
       >
         <li class="flex justify-between">
           <span>Price</span>
@@ -161,7 +161,7 @@
           <span>0.00EGP</span>
         </li>
       </ul>
-      <ul class="flex flex-col gap-5">
+      <ul class="flex flex-col gap-y-5">
         <li class="flex justify-between text-text-color">
           <span class="uppercase">Total</span>
           <span>{{ cartData()?.data?.totalCartPrice }}EGP</span>
