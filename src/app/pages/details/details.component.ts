@@ -1,4 +1,4 @@
-import { ProgressBar } from 'primeng/progressbar';
+import { DatePipe, isPlatformBrowser, NgClass, NgIf } from '@angular/common';
 import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
@@ -7,20 +7,23 @@ import {
   inject,
   OnInit,
   PLATFORM_ID,
-  Renderer2,
+  signal,
   ViewChild,
+  WritableSignal,
 } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { CategoryService } from '../../core/services/category/category.service';
-import { IProduct } from '../../shared/interfaces/iproduct';
-import { Breadcrumb } from 'primeng/breadcrumb';
-import { MenuItem } from 'primeng/api';
-import { DatePipe, isPlatformBrowser, NgClass, NgIf } from '@angular/common';
-import { SwiperContainer } from 'swiper/element';
-import { ButtonModule } from 'primeng/button';
 import { AccordionModule } from 'primeng/accordion';
+import { MenuItem, MessageService } from 'primeng/api';
+import { Breadcrumb } from 'primeng/breadcrumb';
+import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
+import { ProgressBar } from 'primeng/progressbar';
+import { SwiperContainer } from 'swiper/element';
+import { CartService } from '../../core/services/cart/cart.service';
+import { CategoryService } from '../../core/services/category/category.service';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
+import { IProduct } from '../../shared/interfaces/iproduct';
+import { Toast } from 'primeng/toast';
 @Component({
   selector: 'app-details',
   imports: [
@@ -34,23 +37,25 @@ import { ProductCardComponent } from '../../shared/components/product-card/produ
     ProgressBar,
     DividerModule,
     ProductCardComponent,
+    Toast,
   ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class DetailsComponent implements OnInit {
-  constructor(
-    @Inject(PLATFORM_ID) private platformId: string,
-    private renderer: Renderer2
-  ) {
+  constructor(@Inject(PLATFORM_ID) private platformId: string) {
     this.twoDaysLater.setDate(this.currentDate.getDate() + 2);
   }
   @ViewChild('swiperContainer') swiperContainer!: ElementRef<SwiperContainer>;
 
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly categoryService = inject(CategoryService);
+  private readonly cartService = inject(CartService);
+  private readonly messageService = inject(MessageService);
   items: MenuItem[] | undefined;
+  cartCount: WritableSignal<number> = signal(1);
+  isloading: WritableSignal<boolean> = signal(false);
   get browserOnly(): boolean {
     return isPlatformBrowser(this.platformId);
   }
@@ -118,6 +123,7 @@ export class DetailsComponent implements OnInit {
         },
       });
   }
+
   slidePrev(): void {
     if (this.swiperContainer?.nativeElement?.swiper) {
       this.swiperContainer?.nativeElement?.swiper.slidePrev();
@@ -135,6 +141,47 @@ export class DetailsComponent implements OnInit {
   }
   chooseSize(size: string): void {
     this.selectedSize = size;
+  }
+
+  increasCount(): void {
+    this.cartCount.update((value) => value + 1);
+  }
+  decreasCount(): void {
+    if (this.cartCount() > 1) {
+      this.cartCount.update((value) => value - 1);
+    }
+  }
+
+  addToCart(id: string): void {
+    this.isloading.set(true);
+    this.cartService.setAddToCart(id).subscribe({
+      next: (res) => {
+        this.cartService.cartNumber.set(res.numOfCartItems);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Product Added',
+          detail: res.message,
+        });
+        this.cartService.setUpdateUserCart(id, this.cartCount()).subscribe({
+          next: (res) => {
+            console.log(res);
+          },
+          error: (err) => {
+            console.log(err);
+          },
+        });
+        this.isloading.set(false);
+      },
+      error: (err) => {
+        console.log(err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Faild To Add Product To cart',
+        });
+        this.isloading.set(false);
+      },
+    });
   }
   // ngOnDestroy(): void {
   //   this.renderer.setStyle(document.body, 'background-color', '#f6f6f6');

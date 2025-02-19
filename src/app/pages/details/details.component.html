@@ -133,28 +133,34 @@
           class="flex items-center bg-white border border-main-color rounded-xl w-full overflow-hidden"
         >
           <button
-            class="flex items-center justify-center text-secText-color hover:bg-main-color hover:text-white w-[30%] h-full py-3 transition-colors duration-300"
+            class="flex items-center justify-center text-text-color hover:bg-main-color hover:text-white w-[30%] h-full py-3 transition-colors duration-300 disabled:text-secText-color"
+            (click)="decreasCount()"
+            [disabled]="cartCount() <= 1"
           >
             <i class="pi pi-minus"></i>
           </button>
           <span
             class="cartNum flex items-center justify-center flex-grow h-full text-center py-3"
           >
-            1
+            {{ cartCount() }}
           </span>
           <button
-            class="flex items-center justify-center text-secText-color hover:bg-main-color hover:text-white w-[30%] h-full py-3 transition-colors duration-300"
+            class="flex items-center justify-center text-text-color hover:bg-main-color hover:text-white w-[30%] h-full py-3 transition-colors duration-300"
+            (click)="increasCount()"
           >
             <i class="pi pi-plus"></i>
           </button>
         </div>
         <button
           class="bg-main-color text-white rounded-xl hover:bg-secondry-color transition-colors duration-300 text-center text-sm sm:text-base max-w-[400px]"
+          (click)="addToCart(productDetails.id!)"
         >
-          @if(productDetails.priceAfterDiscount){
-          {{ productDetails.priceAfterDiscount }}
-          } @else{{{ productDetails.price }}} EGP •
-          <span class="text-xs sm:text-sm">Add to Cart</span>
+          @if (isloading()) {
+          <i class="fa-solid fa-spinner fa-spin"></i>
+          } @else { @if(productDetails.priceAfterDiscount){
+          {{ productDetails.priceAfterDiscount * cartCount() }}
+          } @else{{{ productDetails.price! * cartCount()  }} } EGP •
+          <span class="text-xs sm:text-sm">Add to Cart</span>}
         </button>
       </div>
       <div class="delivery flex items-center bg-[#F2F4F7] w-fit px-3 py-2">
@@ -408,3 +414,4 @@
     [end]="5"
   ></app-product-card>
 </section>
+<p-toast />
