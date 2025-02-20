@@ -19,6 +19,7 @@ import { Menu } from 'primeng/menu';
 import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { AuthService } from '../../core/services/auth/auth.service';
 import { CartService } from '../../core/services/cart/cart.service';
+import { WishlistService } from '../../core/services/wishlist/wishlist.service';
 @Component({
   selector: 'app-navbar',
   imports: [
@@ -43,6 +44,7 @@ export class NavbarComponent {
   }
   private readonly authService = inject(AuthService);
   private readonly cartService = inject(CartService);
+  private readonly wishlistService = inject(WishlistService);
   @ViewChild('mobileMenu') mobileMenu!: ElementRef;
   items: MenuItem[] | undefined;
   userName: string = '';
@@ -52,6 +54,9 @@ export class NavbarComponent {
   isScrolled: boolean = false;
   menuHeight = 0;
   countCart: Signal<number> = computed(() => this.cartService.cartNumber());
+  wishlistCount: Signal<number> = computed(() =>
+    this.wishlistService.wishlistCount()
+  );
   navLinks = [
     {
       name: 'Home',
@@ -102,6 +107,14 @@ export class NavbarComponent {
     this.cartService.setGetUserCart().subscribe({
       next: (res) => {
         this.cartService.cartNumber.set(res.numOfCartItems);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+    this.wishlistService.setGetWishlist().subscribe({
+      next: (res) => {
+        this.wishlistService.wishlistCount.set(res.count);
       },
       error: (err) => {
         console.log(err);

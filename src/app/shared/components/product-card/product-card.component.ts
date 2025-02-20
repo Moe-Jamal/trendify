@@ -1,8 +1,11 @@
 import { SlicePipe } from '@angular/common';
 import {
   Component,
+  effect,
   inject,
+  input,
   Input,
+  InputSignal,
   signal,
   WritableSignal,
 } from '@angular/core';
@@ -11,6 +14,7 @@ import { MessageService } from 'primeng/api';
 import { CartService } from '../../../core/services/cart/cart.service';
 import { IProduct } from '../../interfaces/iproduct';
 import { Toast } from 'primeng/toast';
+import { WishlistService } from '../../../core/services/wishlist/wishlist.service';
 
 @Component({
   selector: 'app-product-card',
@@ -20,13 +24,22 @@ import { Toast } from 'primeng/toast';
   providers: [MessageService],
 })
 export class ProductCardComponent {
+  constructor() {
+    effect(() => {
+      this.wishlistdata.set(this.wishlistIDs());
+    });
+  }
   private readonly cartService = inject(CartService);
   private readonly messageService = inject(MessageService);
+  private readonly wishlistService = inject(WishlistService);
 
   @Input() products: IProduct[] = [];
   @Input() start: number = 0;
   @Input() end?: number;
-  isloading: WritableSignal<string> = signal('');
+  wishlistIDs: InputSignal<string[]> = input(['']);
+  isloadingCart: WritableSignal<string> = signal('');
+  isloadingWishlist: WritableSignal<string> = signal('');
+  wishlistdata: WritableSignal<string[]> = signal(this.wishlistIDs());
   calculateDiscount(price?: number, priceAfterDiscount?: number): string {
     if (price && priceAfterDiscount) {
       return Math.round(((price - priceAfterDiscount) / price) * 100) + '%';
@@ -43,18 +56,17 @@ export class ProductCardComponent {
   }
 
   addToCart(id: string): void {
-    this.isloading.set(id);
+    this.isloadingCart.set(id);
     this.cartService.setAddToCart(id).subscribe({
       next: (res) => {
         console.log(res);
         this.cartService.cartNumber.set(res.numOfCartItems);
-        console.log(this.cartService.cartNumber());
         this.messageService.add({
           severity: 'success',
           summary: 'Product Added',
           detail: res.message,
         });
-        this.isloading.set('');
+        this.isloadingCart.set('');
       },
       error: (err) => {
         console.log(err);
@@ -63,8 +75,57 @@ export class ProductCardComponent {
           summary: 'Error',
           detail: 'Faild To Add Product To cart',
         });
-        this.isloading.set('');
+        this.isloadingCart.set('');
       },
     });
+  }
+
+  addRemoveWishlist(id: string): void {
+    this.isloadingWishlist.set(id);
+    if (this.wishlistdata().includes(id)) {
+      this.wishlistService.setRemoveWishlist(id).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Product Removed',
+            detail: res.message,
+          });
+          this.wishlistService.wishlistCount.set(res.data.length);
+          this.wishlistdata.set(res.data);
+          this.isloadingWishlist.set('');
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Faild To Remove Product From wishlist',
+          });
+          console.log(err);
+          this.isloadingWishlist.set('');
+        },
+      });
+    } else {
+      this.wishlistService.setAddToWishlist(id).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Product Added',
+            detail: res.message,
+          });
+          this.wishlistService.wishlistCount.set(res.data.length);
+          this.wishlistdata.set(res.data);
+          this.isloadingWishlist.set('');
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Faild To Add Product To wishlist',
+          });
+          console.log(err);
+          this.isloadingWishlist.set('');
+        },
+      });
+    }
   }
 }

@@ -80,6 +80,7 @@
   </app-main-title>
   <app-product-card
     [products]="allProducts"
+    [wishlistIDs]="wishlistIds()"
     [start]="15"
     [end]="20"
   ></app-product-card>
@@ -163,6 +164,7 @@
   </div>
   <app-product-card
     [products]="specificProducts"
+    [wishlistIDs]="wishlistIds()"
     [start]="start"
     [end]="end"
   ></app-product-card>
@@ -182,6 +184,7 @@
   </app-main-title>
   <app-product-card
     [products]="allProducts"
+    [wishlistIDs]="wishlistIds()"
     [start]="23"
     [end]="33"
   ></app-product-card>

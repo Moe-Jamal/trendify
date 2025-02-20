@@ -40,25 +40,30 @@
         style="font-size: 1.5rem"
       ></i>
     </button>
-    <a
-      routerLink="/wishlist"
-      class="text-[24px] text-main-color"
-      [class]="{
-        'text-white': isHomePage && !isScrolled
-      }"
-      ><i class="fa-regular fa-heart"></i
-    ></a>
-    <p-overlaybadge [value]="countCart()">
-      <a
-        routerLink="/cart"
-        class="pi pi-shopping-cart text-main-color"
-        style="font-size: 1.5rem"
-        [class]="{
-          'text-white': isHomePage && !isScrolled
-        }"
-      ></a>
-    </p-overlaybadge>
 
+    <div routerLink="/wishlist" class="cursor-pointer">
+      <p-overlaybadge [value]="wishlistCount()" badgeSize="small">
+        <a
+          class="text-[24px] text-main-color"
+          [class]="{
+            'text-white': isHomePage && !isScrolled
+          }"
+          ><i class="fa-regular fa-heart"></i
+        ></a>
+      </p-overlaybadge>
+    </div>
+    <div routerLink="/cart" class="cursor-pointer">
+      <p-overlaybadge [value]="countCart()" badgeSize="small">
+        <a
+          routerLink="/cart"
+          class="pi pi-shopping-cart text-main-color"
+          style="font-size: 1.5rem"
+          [class]="{
+            'text-white': isHomePage && !isScrolled
+          }"
+        ></a>
+      </p-overlaybadge>
+    </div>
     <div>
       <p-menu #menu [model]="items" [popup]="true" />
       <button

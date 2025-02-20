@@ -81,7 +81,7 @@
           </div>
           <div class="right flex flex-col w-full gap-4">
             <span class="text-text-color text-[20px] sm:self-end"
-              >{{ prod.price }}EGP</span
+              >{{ prod.price * prod.count }}EGP</span
             >
             <div class="flex justify-between sm:justify-end gap-3">
               <button
@@ -236,6 +236,7 @@
   </h2>
   <app-product-card
     [products]="similerProducts()"
+    [wishlistIDs]="wishlistIds()"
     [start]="start"
     [end]="end"
   ></app-product-card>

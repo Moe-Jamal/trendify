@@ -1,0 +1,12 @@
+:host ::ng-deep .p-dataview-content {
+    border-radius: 12px;
+}
+
+:host ::ng-deep .p-button{
+    background-color: #8b5e35 !important;
+    border: #8b5e35 1px solid !important;
+}
+
+:host ::ng-deep .p-button:hover {
+    background-color: #9b7e5c !important;
+}

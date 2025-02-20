@@ -1,4 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { CategoryService } from '../../core/services/category/category.service';
 import { MainTitleComponent } from '../../shared/components/main-title/main-title.component';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
@@ -6,6 +12,7 @@ import { IBrand } from '../../shared/interfaces/ibrand';
 import { IProduct } from '../../shared/interfaces/iproduct';
 import { CategorySliderComponent } from './components/category-slider/category-slider.component';
 import { HomeSliderComponent } from './components/home-slider/home-slider.component';
+import { WishlistService } from '../../core/services/wishlist/wishlist.service';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +27,7 @@ import { HomeSliderComponent } from './components/home-slider/home-slider.compon
 })
 export class HomeComponent implements OnInit {
   private readonly categoryService = inject(CategoryService);
+  private readonly wishlistService = inject(WishlistService);
   allProducts: IProduct[] = [];
   specificProducts: IProduct[] = [];
   allBrands: IBrand[] = [];
@@ -32,11 +40,12 @@ export class HomeComponent implements OnInit {
     { name: "Women's Fashion", id: '6439d58a0049ad0b52b9003f' },
     { name: 'Electronics', id: '6439d2d167d9aa4ca970649f' },
   ];
-
+  wishlistIds: WritableSignal<string[]> = signal([]);
   ngOnInit(): void {
     this.getProductsData();
     this.getCateProductsData(undefined);
     this.getAllBrands();
+    this.getUserWishlist();
   }
 
   getProductsData(): void {
@@ -91,5 +100,17 @@ export class HomeComponent implements OnInit {
   setCateId(id: any): void {
     this.selectedCategoryId = id;
     this.getCateProductsData(id);
+  }
+
+  getUserWishlist(): void {
+    this.wishlistService.setGetWishlist().subscribe({
+      next: (res) => {
+        this.wishlistIds.set(res.data.map((element: any) => element.id));
+        console.log(this.wishlistIds());
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 }

@@ -77,7 +77,7 @@ body {
     display: flex;
     will-change: transform;
     width: calc(var(--width) * 40);
-    animation: autoRun 80s linear infinite;
+    animation: autoRun 60s linear infinite;
 }
 
 .slider .list .item {

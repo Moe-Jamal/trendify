@@ -21,6 +21,25 @@
         </h5>
       </div>
       }
+      <button
+        class="w-[2.5rem] h-[40px] bg-white border absolute top-3 right-3 flex justify-center items-center z-30 rounded-full cursor-pointer text-main-color"
+        (click)="$event.stopPropagation()"
+        (click)="addRemoveWishlist(prod.id!)"
+        [disabled]="isloadingWishlist()"
+      >
+        @if (isloadingWishlist() === prod.id ) {
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        }@else {
+        <i
+          class="pi"
+          style="font-size: 1.25rem"
+          [class]="{
+            'pi-heart-fill': wishlistdata().includes(prod.id!),
+            'pi-heart': !wishlistdata().includes(prod.id!)
+          }"
+        ></i>
+        }
+      </button>
     </div>
     <div class="caption p-2 text-text-color">
       <h4 class="text-[24px]">{{ prod.title?.split(" ", 2)?.join(" ") }}</h4>
@@ -46,9 +65,9 @@
           class="main-btn m-0 p-0 h-[2rem] w-[2rem] rounded-[.3125rem] flex items-center justify-center disabled:text-secText-color"
           (click)="$event.stopPropagation()"
           (click)="addToCart(prod.id!)"
-          [disabled]="isloading() === prod.id"
+          [disabled]="isloadingCart() === prod.id"
         >
-          @if (isloading() === prod.id) {
+          @if (isloadingCart() === prod.id) {
           <i class="fa-solid fa-spinner fa-spin"></i>
           }@else {
           <i class="pi pi-plus"></i> }

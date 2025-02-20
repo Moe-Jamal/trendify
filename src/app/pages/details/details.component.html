@@ -16,6 +16,7 @@
     </ng-template>
   </p-breadcrumb>
 </div>
+@if (productDetails) {
 <section class="product-details">
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 container max-w-full">
     <div class="flex flex-col sm:flex-row gap-6">
@@ -53,11 +54,24 @@
           /></swiper-slide>
           }
         </swiper-container>
-        <div
-          class="w-[3.125rem] h-[3.125rem] bg-white border border-main-color absolute top-4 right-4 flex justify-center items-center z-30 rounded-full cursor-pointer"
+        <button
+          class="w-[3.125rem] h-[3.125rem] bg-white border border-main-color absolute top-4 right-4 flex justify-center items-center z-30 rounded-full cursor-pointer text-main-color"
+          [disabled]="isloadingWishlist()"
+          (click)="addRemoveWishlist(productDetails.id!)"
         >
-          <i class="pi pi-heart text-main-color" style="font-size: 1.5rem"></i>
-        </div>
+          @if (isloadingWishlist()) {
+          <i class="fa-solid fa-spinner fa-spin"></i>
+          }@else {
+          <i
+            class="pi"
+            style="font-size: 1.5rem"
+            [class]="{
+              'pi-heart-fill': wishlistIds().includes(productDetails.id!),
+              'pi-heart': !wishlistIds().includes(productDetails.id!)
+            }"
+          ></i>
+          }
+        </button>
         <button class="custom-prev left-[15px]" (click)="slidePrev()">
           <i class="fa-solid fa-chevron-left text-2xl"></i>
         </button>
@@ -404,12 +418,14 @@
     </p-accordion>
   </div>
 </section>
+}
 <section class="similer-products pb-[40px] container max-w-full">
   <h2 class="text-text-color font-semibold mb-5 text-[2rem] sm:text-[2.5rem]">
     Similar products
   </h2>
   <app-product-card
     [products]="similerProducts"
+    [wishlistIDs]="wishlistIds()"
     [start]="0"
     [end]="5"
   ></app-product-card>

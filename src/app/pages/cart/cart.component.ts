@@ -1,3 +1,4 @@
+import { WishlistService } from './../../core/services/wishlist/wishlist.service';
 import { CommonModule, DatePipe, NgClass, NgIf } from '@angular/common';
 import {
   Component,
@@ -42,7 +43,10 @@ export class CartComponent {
   private readonly confirmationService = inject(ConfirmationService);
   private readonly messageService = inject(MessageService);
   private readonly categoryService = inject(CategoryService);
+  private readonly wishlistService = inject(WishlistService);
+
   items: MenuItem[] | undefined;
+  wishlistIds: WritableSignal<string[]> = signal([]);
   cartData: WritableSignal<ICart | null> = signal<ICart | null>(null);
   isDecreasing: WritableSignal<string | null> = signal(null);
   isIncreasing: WritableSignal<string | null> = signal(null);
@@ -52,6 +56,7 @@ export class CartComponent {
   end: number = this.start + 5;
   currentDate: Date = new Date();
   twoDaysLater: Date = new Date();
+
   ngOnInit(): void {
     this.twoDaysLater.setDate(this.currentDate.getDate() + 2);
     this.items = [
@@ -61,6 +66,7 @@ export class CartComponent {
     ];
     this.getUserCart();
     this.getSimilerProducts();
+    this.getUserWishlist();
   }
 
   getUserCart(): void {
@@ -121,6 +127,7 @@ export class CartComponent {
       },
     });
   }
+
   confirmDeleteItem(productID: string) {
     this.selectedProductID.set(productID!);
     this.confirmationService.confirm({
@@ -150,8 +157,7 @@ export class CartComponent {
           detail: 'All items have been successfully removed from your cart.',
         });
         this.cartData.set(res);
-        console.log(res);
-        this.cartService.cartNumber.set(res.numOfCartItems);
+        this.cartService.cartNumber.set(0);
       },
       error: (err) => {
         this.messageService.add({
@@ -185,6 +191,18 @@ export class CartComponent {
       next: (res) => {
         console.log(res.data);
         this.similerProducts.set(res.data);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  getUserWishlist(): void {
+    this.wishlistService.setGetWishlist().subscribe({
+      next: (res) => {
+        this.wishlistIds.set(res.data.map((element: any) => element.id));
+        console.log(this.wishlistIds());
       },
       error: (err) => {
         console.log(err);

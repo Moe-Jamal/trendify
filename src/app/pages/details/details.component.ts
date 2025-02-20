@@ -24,6 +24,7 @@ import { CategoryService } from '../../core/services/category/category.service';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { IProduct } from '../../shared/interfaces/iproduct';
 import { Toast } from 'primeng/toast';
+import { WishlistService } from '../../core/services/wishlist/wishlist.service';
 @Component({
   selector: 'app-details',
   imports: [
@@ -53,13 +54,17 @@ export class DetailsComponent implements OnInit {
   private readonly categoryService = inject(CategoryService);
   private readonly cartService = inject(CartService);
   private readonly messageService = inject(MessageService);
+  private readonly wishlistService = inject(WishlistService);
+
   items: MenuItem[] | undefined;
+  wishlistIds: WritableSignal<string[]> = signal([]);
   cartCount: WritableSignal<number> = signal(1);
   isloading: WritableSignal<boolean> = signal(false);
+  isloadingWishlist: WritableSignal<boolean> = signal(false);
   get browserOnly(): boolean {
     return isPlatformBrowser(this.platformId);
   }
-  productDetails: IProduct = {};
+  productDetails: IProduct | null = null;
   productColor = [
     { name: 'Blue', code: '#507CCD' },
     { name: 'White', code: '#fff' },
@@ -83,7 +88,6 @@ export class DetailsComponent implements OnInit {
   twoDaysLater: Date = new Date();
   similerProducts: IProduct[] = [];
   ngOnInit(): void {
-    // this.renderer.setStyle(document.body, 'background-color', '#fff');
     this.activatedRoute.paramMap.subscribe({
       next: (p) => {
         let productId = p.get('id');
@@ -95,8 +99,8 @@ export class DetailsComponent implements OnInit {
             this.items = [
               { label: 'Home', route: '/home' },
               { label: 'Category', route: '/shop' },
-              { label: this.productDetails.category?.name },
-              { label: this.productDetails.title },
+              { label: this.productDetails?.category?.name },
+              { label: this.productDetails?.title },
             ];
             if (this.swiperContainer?.nativeElement?.swiper) {
               this.swiperContainer.nativeElement.swiper.slideTo(0);
@@ -108,11 +112,12 @@ export class DetailsComponent implements OnInit {
         });
       },
     });
+    this.getUserWishlist();
   }
 
   getSimilerProducts(): void {
     this.categoryService
-      .setGetProducts(this.productDetails.category?._id)
+      .setGetProducts(this.productDetails?.category?._id)
       .subscribe({
         next: (res) => {
           this.similerProducts = res.data;
@@ -183,7 +188,65 @@ export class DetailsComponent implements OnInit {
       },
     });
   }
-  // ngOnDestroy(): void {
-  //   this.renderer.setStyle(document.body, 'background-color', '#f6f6f6');
-  // }
+
+  getUserWishlist(): void {
+    this.wishlistService.setGetWishlist().subscribe({
+      next: (res) => {
+        this.wishlistIds.set(res.data.map((element: any) => element.id));
+        console.log(this.wishlistIds());
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  addRemoveWishlist(id: string): void {
+    this.isloadingWishlist.set(true);
+    if (this.wishlistIds().includes(id)) {
+      this.wishlistService.setRemoveWishlist(id).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Product Removed',
+            detail: res.message,
+          });
+          this.wishlistService.wishlistCount.set(res.data.length);
+          this.wishlistIds.set(res.data);
+          this.isloadingWishlist.set(false);
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Faild To Remove Product From wishlist',
+          });
+          console.log(err);
+          this.isloadingWishlist.set(false);
+        },
+      });
+    } else {
+      this.wishlistService.setAddToWishlist(id).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Product Added',
+            detail: res.message,
+          });
+          this.wishlistService.wishlistCount.set(res.data.length);
+          this.wishlistIds.set(res.data);
+          this.isloadingWishlist.set(false);
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Faild To Add Product To wishlist',
+          });
+          console.log(err);
+          this.isloadingWishlist.set(false);
+        },
+      });
+    }
+  }
 }
