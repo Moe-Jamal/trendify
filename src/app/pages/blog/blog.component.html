@@ -1,1 +1,53 @@
-<p>blog works!</p>
+<div class="h-[88px]" aria-hidden="true"></div>
+<div class="card flex justify-center py-8">
+  <p-breadcrumb class="container max-w-full" [model]="items">
+    <ng-template #item let-item>
+      <ng-container *ngIf="item.route; else elseBlock">
+        <a [routerLink]="item.route" class="p-breadcrumb-item-link">
+          <span [ngClass]="[item.icon ? item.icon : '', 'text-color']"></span>
+          <span class="text-main-color font-semibold">{{ item.label }}</span>
+        </a>
+      </ng-container>
+      <ng-template #elseBlock>
+        <span class="text-secText-color truncate">{{
+          item.label.split(" ", 3)?.join(" ")
+        }}</span>
+      </ng-template>
+    </ng-template>
+  </p-breadcrumb>
+</div>
+<div class="heading text-center mx-auto container max-w-full">
+  <h1 class="text-text-color text-[2.25rem] font-bold mb-3">Blog</h1>
+  <p class="text-sm font-medium text-[#667085]">
+    Make your best moments more stylish with our latest designs of clothing.
+  </p>
+</div>
+<section class="blogs py-[4rem] container max-w-full">
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 place-items-center gap-10">
+    @for (blog of blogs; track $index) {
+    <div class="card rounded-lg cursor-pointer shadow-md">
+      <div class="img-holder h-[250px]">
+        <img
+          [src]="blog.imageUrl"
+          class="w-full h-full object-cover rounded-t-lg"
+          [alt]="blog.title"
+        />
+      </div>
+      <div class="caption p-5 bg-white rounded-b-lg">
+        <div class="flex mb-5 justify-between">
+          <span class="text-[#475467]">{{ blog.genre }}</span>
+          <span class="text-[#475467]">{{
+            blog.CreatedAt | date : "MMM d, yyyy"
+          }}</span>
+        </div>
+        <h2 class="text-text-color font-bold mb-2 text-[1.125rem]">
+          {{ blog.title }}
+        </h2>
+        <p class="text-[#475467] line-clamp-2 text-sm">
+          {{ blog.description }}
+        </p>
+      </div>
+    </div>
+    }
+  </div>
+</section>
