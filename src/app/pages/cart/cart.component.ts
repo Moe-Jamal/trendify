@@ -72,7 +72,6 @@ export class CartComponent {
   getUserCart(): void {
     this.cartService.setGetUserCart().subscribe({
       next: (res) => {
-        console.log(res);
         this.cartData.set(res);
       },
       error: (err) => {
@@ -189,7 +188,6 @@ export class CartComponent {
   getSimilerProducts(): void {
     this.categoryService.setGetProducts(undefined).subscribe({
       next: (res) => {
-        console.log(res.data);
         this.similerProducts.set(res.data);
       },
       error: (err) => {
@@ -202,7 +200,6 @@ export class CartComponent {
     this.wishlistService.setGetWishlist().subscribe({
       next: (res) => {
         this.wishlistIds.set(res.data.map((element: any) => element.id));
-        console.log(this.wishlistIds());
       },
       error: (err) => {
         console.log(err);

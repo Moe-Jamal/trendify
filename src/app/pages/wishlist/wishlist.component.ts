@@ -67,11 +67,6 @@ export class WishlistComponent {
   deleteWishlistItem(id: string): void {
     this.wishlistService.setRemoveWishlist(id).subscribe({
       next: (res) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Item Removed',
-          detail: 'The item has been successfully removed from your wishlist.',
-        });
         this.getUserWishlist();
       },
       error: (err) => {
@@ -95,6 +90,7 @@ export class WishlistComponent {
           summary: 'Product Added',
           detail: res.message,
         });
+        this.deleteWishlistItem(id);
         this.isloading.set('');
       },
       error: (err) => {
@@ -117,6 +113,12 @@ export class WishlistComponent {
       accept: () => {
         if (this.selectedProductID()) {
           this.deleteWishlistItem(this.selectedProductID());
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Item Removed',
+            detail:
+              'The item has been successfully removed from your wishlist.',
+          });
         }
       },
       reject: () => {

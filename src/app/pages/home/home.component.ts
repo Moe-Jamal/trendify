@@ -88,7 +88,6 @@ export class HomeComponent implements OnInit {
   getAllBrands(): void {
     this.categoryService.setGetBrands().subscribe({
       next: (res) => {
-        console.log(res.data);
         this.allBrands = res.data;
       },
       error: (err) => {
@@ -106,7 +105,6 @@ export class HomeComponent implements OnInit {
     this.wishlistService.setGetWishlist().subscribe({
       next: (res) => {
         this.wishlistIds.set(res.data.map((element: any) => element.id));
-        console.log(this.wishlistIds());
       },
       error: (err) => {
         console.log(err);

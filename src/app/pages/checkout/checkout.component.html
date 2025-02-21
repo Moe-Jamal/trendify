@@ -1,1 +1,174 @@
-<p>checkout works!</p>
+<div class="h-[88px]" aria-hidden="true"></div>
+<div class="card flex justify-center py-8">
+  <p-breadcrumb class="container max-w-full" [model]="items">
+    <ng-template #item let-item>
+      <ng-container *ngIf="item.route; else elseBlock">
+        <a [routerLink]="item.route" class="p-breadcrumb-item-link">
+          <span [ngClass]="[item.icon ? item.icon : '', 'text-color']"></span>
+          <span class="text-main-color font-semibold">{{ item.label }}</span>
+        </a>
+      </ng-container>
+      <ng-template #elseBlock>
+        <span class="text-secText-color truncate">{{ item.label }}</span>
+      </ng-template>
+    </ng-template>
+  </p-breadcrumb>
+</div>
+<section class="container max-w-full">
+  <div class="py-10 grid grid-col-2 lg:grid-cols-[1fr_350px] gap-5 relative">
+    <div class="flex flex-col">
+      <div class="flex flex-col gap-8">
+        <div
+          class="bg-white rounded-[.625rem] gap-4 flex flex-col sm:flex-row justify-between p-4 sm:items-center"
+        >
+          <div class="flex gap-4">
+            <input
+              type="radio"
+              class="border-main-color accent-main-color"
+              value="adress"
+              [(ngModel)]="selectedAddress"
+            />
+            <div class="flex flex-col gap-2">
+              <h2
+                class="text-text-color text-[1.125rem] sm:text-[1.5rem] font-medium flex items-center gap-3"
+              >
+                Huzefa Bagwala
+                <span
+                  class="px-2 p-1 border border-main-color text-main-color bg-white text-xs flex items-center justify-center"
+                  >Home</span
+                >
+              </h2>
+              <p class="text-text-color">
+                1131 Dusty Townline, Jacksonville, TX 40322
+              </p>
+              <p>
+                <span class="text-text-color">Contact -</span> (936) 361-0310
+              </p>
+            </div>
+          </div>
+          <div class="flex gap-3 justify-center">
+            <button
+              class="h-[40px] px-3 border border-main-color text-main-color bg-white hover:bg-main-color hover:text-white transition-colors duration-300 flex justify-center items-center rounded-[10px]"
+            >
+              <i class="pi pi-file-edit"></i>
+            </button>
+            <button
+              class="h-[40px] px-3 border border-main-color text-main-color bg-white hover:bg-main-color hover:text-white transition-colors duration-300 flex justify-center items-center rounded-[10px]"
+            >
+              <i class="pi pi-trash"></i>
+            </button>
+          </div>
+        </div>
+        <button
+          class="flex gap-4 text-main-color items-center"
+          (click)="showDialog()"
+        >
+          <i class="pi pi-plus"></i>
+          <span class="font-medium">Add New Address</span>
+        </button>
+      </div>
+      <div></div>
+      <div></div>
+    </div>
+    <div
+      class="bg-white border border-[#D1D1D8] rounded-[.625rem] p-[14px] sm:p-5 lg:h-fit static lg:sticky top-[100px] w-full max-w-full overflow-hidden"
+    >
+      <h3 class="mb-6 text-text-color text-[24px]">Order Summary</h3>
+      <ul
+        class="flex flex-col gap-y-5 pb-5 mb-5 border-b border-[#D1D1D8] text-text-color"
+      >
+        <li class="flex justify-between">
+          <span>Price</span>
+          <span>{{ cartData()?.data?.totalCartPrice }}EGP</span>
+        </li>
+        <li class="flex justify-between">
+          <span>Shipping</span>
+          <span class="text-main-color">Free</span>
+        </li>
+        <li class="flex justify-between">
+          <span>Coupon Applied</span>
+          <span>0.00EGP</span>
+        </li>
+      </ul>
+      <ul class="flex flex-col gap-y-5">
+        <li class="flex justify-between text-text-color">
+          <span class="uppercase">Total</span>
+          <span>{{ cartData()?.data?.totalCartPrice }}EGP</span>
+        </li>
+        <li class="flex justify-between text-text-color">
+          <span>Estimated Delivery by</span>
+          <span>{{ twoDaysLater | date : "d MMM, yyyy" }}</span>
+        </li>
+      </ul>
+      <div
+        class="btn-group justify-between w-full p-2 flex items-center rounded-[.625rem] border border-[#C0C0C0] gap-3 my-5"
+      >
+        <input
+          type="text"
+          class="w-2/3 sm:flex-grow min-w-0 outline-none placeholder:text-secText-color"
+          placeholder="Coupon Code"
+        />
+        <button
+          class="shrink-0 text-white px-4 py-2 rounded-[.3125rem] bg-main-color hover:bg-secondry-color duration-300 transition-colors"
+        >
+          Apply
+        </button>
+      </div>
+      <button class="main-btn my-0">Place Order</button>
+    </div>
+  </div>
+</section>
+<p-dialog
+  maskStyleClass="backdrop-blur-sm"
+  [(visible)]="visible"
+  styleClass="!border-0 !bg-transparent"
+>
+  <ng-template #headless>
+    <div
+      class="flex flex-col px-8 py-8 gap-6 rounded-2xl"
+      style="
+        border-radius: 12px;
+        background-image: radial-gradient(circle at left top, #9b7e5c, #8b5e35);
+      "
+    >
+      <h2 class="text-text-color text-2xl text-center">New Address</h2>
+      <div class="inline-flex flex-col gap-2">
+        <label for="username" class="text-text-color font-semibold"
+          >Username</label
+        >
+        <input
+          pInputText
+          id="username"
+          class="!bg-white/20 !border-0 !p-4 !text-text-color w-80"
+        />
+      </div>
+      <div class="inline-flex flex-col gap-2">
+        <label for="password" class="text-text-color font-semibold"
+          >Password</label
+        >
+        <input
+          pInputText
+          id="password"
+          class="!bg-white/20 !border-0 !p-4 !text-text-color w-80"
+          type="password"
+        />
+      </div>
+      <div class="flex items-center gap-4">
+        <p-button
+          label="Cancel"
+          (click)="closeDialog()"
+          [text]="true"
+          styleClass="!p-4 w-full !text-white !border !border-white/30 hover:!bg-white/10"
+          class="w-full"
+        />
+        <p-button
+          label="Add"
+          (click)="closeDialog()"
+          [text]="true"
+          styleClass="!p-4 w-full !text-white !border !border-white/30 hover:!bg-white/10"
+          class="w-full"
+        />
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>
