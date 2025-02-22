@@ -20,7 +20,7 @@ export class OrdersService {
 
   setOnlineOrder(cartId: string, addressInfo: object): Observable<any> {
     return this.httpClient.post(
-      `${environment.baseUrl}/api/v1/orders/checkout-session/${cartId}?url=http://localhost:4200`,
+      `${environment.baseUrl}/api/v1/orders/checkout-session/${cartId}?url=https://trendify-coral.vercel.app/`,
       {
         shippingAddress: addressInfo,
       }
