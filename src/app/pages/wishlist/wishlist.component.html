@@ -8,7 +8,7 @@
   </h2>
   <div class="card">
     @if (wishlistData()) {
-    <p-dataview #dv [value]="wishlistData()!">
+    <p-dataview #dv [value]="wishlistData()!" [emptyMessage]="' '">
       <ng-template #list let-items>
         <div class="grid xl:grid-cols-12 gap-4 grid-nogutter">
           @for (item of wishlistData();; track $index; let first = $first) {
@@ -86,6 +86,19 @@
                 </div>
               </div>
             </div>
+          </div>
+          } @empty {
+          <div
+            class="h-[300px] col-span-12 px-10 flex justify-center items-center text-center"
+          >
+            <h4>
+              You have currently <span class="font-semibold">0 items</span> in
+              your Wishlist.
+              <a routerLink="/shop"
+                ><span class="underline me-2">Go To Shop</span>
+                <i class="fa-solid fa-arrow-right-long"></i
+              ></a>
+            </h4>
           </div>
           }
         </div>

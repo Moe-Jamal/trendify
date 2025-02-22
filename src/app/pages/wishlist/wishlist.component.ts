@@ -52,14 +52,26 @@ export class WishlistComponent {
     }
   }
 
-  getUserWishlist(): void {
-    this.wishlistService.setGetWishlist().subscribe({
+  addToCart(id: string): void {
+    this.isloading.set(id);
+    this.cartService.setAddToCart(id).subscribe({
       next: (res) => {
-        this.wishlistService.wishlistCount.set(res.count);
-        this.wishlistData.set(res.data);
+        this.cartService.cartNumber.set(res.numOfCartItems);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Product Added',
+          detail: res.message,
+        });
+        this.deleteWishlistItem(id);
       },
       error: (err) => {
         console.log(err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Faild To Add Product To cart',
+        });
+        this.isloading.set('');
       },
     });
   }
@@ -76,31 +88,20 @@ export class WishlistComponent {
           summary: 'Deletion Failed',
           detail: 'There was an error removing the item. Please try again.',
         });
+        this.isloading.set('');
       },
     });
   }
 
-  addToCart(id: string): void {
-    this.isloading.set(id);
-    this.cartService.setAddToCart(id).subscribe({
+  getUserWishlist(): void {
+    this.wishlistService.setGetWishlist().subscribe({
       next: (res) => {
-        this.cartService.cartNumber.set(res.numOfCartItems);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Product Added',
-          detail: res.message,
-        });
-        this.deleteWishlistItem(id);
+        this.wishlistService.wishlistCount.set(res.count);
+        this.wishlistData.set(res.data);
         this.isloading.set('');
       },
       error: (err) => {
         console.log(err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Faild To Add Product To cart',
-        });
-        this.isloading.set('');
       },
     });
   }

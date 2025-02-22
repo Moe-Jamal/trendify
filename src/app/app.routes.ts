@@ -89,6 +89,14 @@ export const routes: Routes = [
         title: 'Wishlist',
       },
       {
+        path: 'allorders',
+        loadComponent: () =>
+          import('./pages/allorders/allorders/allorders.component').then(
+            (m) => m.AllordersComponent
+          ),
+        title: 'All Orders',
+      },
+      {
         path: 'contact-us',
         loadComponent: () =>
           import('./pages/contact-us/contact-us.component').then(

@@ -4,3 +4,10 @@
     }
     
 }
+
+:host ::ng-deep p-togglebutton {
+    width: 100% ;
+}
+:host ::ng-deep .p-togglebutton {
+    width: 100% ;
+}

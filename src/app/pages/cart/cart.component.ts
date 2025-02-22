@@ -7,7 +7,7 @@ import {
   ViewChild,
   WritableSignal,
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
@@ -44,6 +44,7 @@ export class CartComponent {
   private readonly messageService = inject(MessageService);
   private readonly categoryService = inject(CategoryService);
   private readonly wishlistService = inject(WishlistService);
+  private readonly router = inject(Router);
 
   items: MenuItem[] | undefined;
   wishlistIds: WritableSignal<string[]> = signal([]);
@@ -205,5 +206,17 @@ export class CartComponent {
         console.log(err);
       },
     });
+  }
+
+  toCheckout(): void {
+    if (this.cartData()?.numOfCartItems) {
+      this.router.navigate(['/checkout']);
+    } else {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Action Cancelled',
+        detail: 'Please Add item to your cart to proceed.',
+      });
+    }
   }
 }

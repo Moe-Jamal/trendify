@@ -16,59 +16,131 @@
 </div>
 <section class="container max-w-full">
   <div class="py-10 grid grid-col-2 lg:grid-cols-[1fr_350px] gap-5 relative">
-    <div class="flex flex-col">
-      <div class="flex flex-col gap-8">
+    <div class="flex flex-col gap-8">
+      <div class="flex flex-col gap-8 border-b border-[#D1D1D8] pb-4">
+        @for (address of addresses(); track $index) {
         <div
           class="bg-white rounded-[.625rem] gap-4 flex flex-col sm:flex-row justify-between p-4 sm:items-center"
         >
           <div class="flex gap-4">
             <input
               type="radio"
-              class="border-main-color accent-main-color"
-              value="adress"
+              name="address"
+              class="border-main-color accent-main-color w-[18px]"
+              [value]="address"
               [(ngModel)]="selectedAddress"
             />
             <div class="flex flex-col gap-2">
               <h2
                 class="text-text-color text-[1.125rem] sm:text-[1.5rem] font-medium flex items-center gap-3"
               >
-                Huzefa Bagwala
+                {{ address.city }}
                 <span
                   class="px-2 p-1 border border-main-color text-main-color bg-white text-xs flex items-center justify-center"
-                  >Home</span
+                  >{{ address.name }}</span
                 >
               </h2>
               <p class="text-text-color">
-                1131 Dusty Townline, Jacksonville, TX 40322
+                {{ address.details }}
               </p>
               <p>
-                <span class="text-text-color">Contact -</span> (936) 361-0310
+                <span class="text-text-color">Contact -</span>
+                {{ address.phone }}
               </p>
             </div>
           </div>
           <div class="flex gap-3 justify-center">
             <button
               class="h-[40px] px-3 border border-main-color text-main-color bg-white hover:bg-main-color hover:text-white transition-colors duration-300 flex justify-center items-center rounded-[10px]"
+              (click)="deleteUserAddress(address._id)"
             >
-              <i class="pi pi-file-edit"></i>
-            </button>
-            <button
-              class="h-[40px] px-3 border border-main-color text-main-color bg-white hover:bg-main-color hover:text-white transition-colors duration-300 flex justify-center items-center rounded-[10px]"
-            >
-              <i class="pi pi-trash"></i>
+              @if (deleteLoading() === address._id) {
+              <i class="fa-solid fa-spinner fa-spin"></i>
+              } @else { <i class="pi pi-trash"></i>}
             </button>
           </div>
         </div>
+        }
         <button
-          class="flex gap-4 text-main-color items-center"
+          class="flex gap-4 text-main-color items-center outline-none"
           (click)="showDialog()"
         >
           <i class="pi pi-plus"></i>
           <span class="font-medium">Add New Address</span>
         </button>
       </div>
-      <div></div>
-      <div></div>
+      <div class="flex flex-col gap-5">
+        <h3 class="text-text-color font-medium text-[1.25rem]">
+          Shipment Method
+        </h3>
+        <div class="border border-[#D1D1D8]">
+          <div
+            class="flex items-center justify-between gap-3 p-3 sm:px-6 sm:py-4 border-b border-[#D1D1D8]"
+          >
+            <div class="flex gap-3">
+              <input
+                type="radio"
+                name="shipping"
+                class="border-main-color accent-main-color w-[18px]"
+                value="Free"
+                [(ngModel)]="shippingMethod"
+              />
+              <span class="text-text-color">
+                <span class="font-medium">Free</span> Regular Shipment</span
+              >
+            </div>
+            <span class="text-nowrap">{{
+              twoDaysLater | date : "d MMM, yyyy"
+            }}</span>
+          </div>
+          <div
+            class="flex items-center justify-between gap-3 p-3 sm:px-6 sm:py-4"
+          >
+            <div class="flex gap-3">
+              <input
+                type="radio"
+                name="shipping"
+                class="border-main-color accent-main-color w-[18px]"
+                value="100EGP"
+                [(ngModel)]="shippingMethod"
+              />
+              <span class="text-text-color"
+                ><span class="font-medium">100EGP</span> Priority Shipping</span
+              >
+            </div>
+            <span class="text-nowrap">{{
+              currentDate | date : "d MMM, yyyy"
+            }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-5">
+        <h3 class="text-text-color font-medium text-[1.25rem]">
+          Payment Method
+        </h3>
+        <div class="border border-[#D1D1D8]">
+          <div class="flex gap-3 px-6 py-4 border-b border-[#D1D1D8]">
+            <input
+              type="radio"
+              name="payment"
+              class="border-main-color accent-main-color w-[18px]"
+              value="online"
+              [(ngModel)]="paymentMethod"
+            />
+            <span class="text-text-color"> Online Payment</span>
+          </div>
+          <div class="flex gap-3 px-6 py-4">
+            <input
+              type="radio"
+              name="payment"
+              class="border-main-color accent-main-color w-[18px]"
+              value="cash"
+              [(ngModel)]="paymentMethod"
+            />
+            <span class="text-text-color">Cash On Delivery</span>
+          </div>
+        </div>
+      </div>
     </div>
     <div
       class="bg-white border border-[#D1D1D8] rounded-[.625rem] p-[14px] sm:p-5 lg:h-fit static lg:sticky top-[100px] w-full max-w-full overflow-hidden"
@@ -83,7 +155,7 @@
         </li>
         <li class="flex justify-between">
           <span>Shipping</span>
-          <span class="text-main-color">Free</span>
+          <span class="text-main-color">{{ shippingMethod() }}</span>
         </li>
         <li class="flex justify-between">
           <span>Coupon Applied</span>
@@ -93,11 +165,19 @@
       <ul class="flex flex-col gap-y-5">
         <li class="flex justify-between text-text-color">
           <span class="uppercase">Total</span>
+          @if (shippingMethod() === "Free") {
           <span>{{ cartData()?.data?.totalCartPrice }}EGP</span>
+          } @else {
+          <span>{{ cartData()?.data?.totalCartPrice! + 100 }}EGP</span>
+          }
         </li>
         <li class="flex justify-between text-text-color">
           <span>Estimated Delivery by</span>
+          @if (shippingMethod() === 'Free') {
           <span>{{ twoDaysLater | date : "d MMM, yyyy" }}</span>
+          }@else {
+          <span>{{ currentDate | date : "d MMM, yyyy" }}</span>
+          }
         </li>
       </ul>
       <div
@@ -114,61 +194,140 @@
           Apply
         </button>
       </div>
-      <button class="main-btn my-0">Place Order</button>
+      <button class="main-btn my-0" (click)="placeOrder()">Place Order</button>
     </div>
   </div>
 </section>
 <p-dialog
-  maskStyleClass="backdrop-blur-sm"
+  maskStyleClass="bg-[rgba(0,0,0,0.8)]"
   [(visible)]="visible"
   styleClass="!border-0 !bg-transparent"
 >
   <ng-template #headless>
     <div
-      class="flex flex-col px-8 py-8 gap-6 rounded-2xl"
-      style="
-        border-radius: 12px;
-        background-image: radial-gradient(circle at left top, #9b7e5c, #8b5e35);
-      "
+      class="flex flex-col px-8 py-8 gap-6 rounded-2xl bg-white shadow-lg"
+      style="border-radius: 12px"
     >
-      <h2 class="text-text-color text-2xl text-center">New Address</h2>
-      <div class="inline-flex flex-col gap-2">
-        <label for="username" class="text-text-color font-semibold"
-          >Username</label
-        >
-        <input
-          pInputText
-          id="username"
-          class="!bg-white/20 !border-0 !p-4 !text-text-color w-80"
-        />
-      </div>
-      <div class="inline-flex flex-col gap-2">
-        <label for="password" class="text-text-color font-semibold"
-          >Password</label
-        >
-        <input
-          pInputText
-          id="password"
-          class="!bg-white/20 !border-0 !p-4 !text-text-color w-80"
-          type="password"
-        />
-      </div>
+      <h2 class="!text-text-color text-2xl text-center">New Address</h2>
+      <form [formGroup]="newAddress" class="flex flex-col gap-6">
+        <div class="flex gap-6 sm:gap-3 flex-col sm:flex-row">
+          <div class="card flex justify-center flex-col gap-2">
+            @let nameInput = newAddress.get('name');
+
+            <p-selectbutton
+              [options]="stateOptions"
+              optionLabel="label"
+              optionValue="value"
+              formControlName="name"
+              class="border border-main-color w-full"
+            ></p-selectbutton>
+            @if (nameInput?.errors && nameInput?.touched) {
+            <p-message severity="error">Please Select One.</p-message>
+            }
+          </div>
+
+          <div class="inline-flex flex-col gap-2">
+            @let phoneInput = newAddress.get('phone');
+
+            <input
+              pInputText
+              id="phone"
+              formControlName="phone"
+              placeholder="Phone"
+              class="!text-[#64748b] w-72 sm:w-full !bg-[#f1f5f9] border !border-main-color"
+            />
+            @if (phoneInput?.errors && phoneInput?.touched) { @if
+            (phoneInput?.getError('required')) {
+            <p-message severity="error">This field is required.</p-message>
+            } @else if (phoneInput?.getError('pattern')) {
+            <p-message severity="error"
+              >Please Enter Egyption Phone Number</p-message
+            >
+            } }
+          </div>
+        </div>
+
+        <div>
+          @let addressInput = newAddress.get('details');
+          <p-floatlabel variant="in">
+            <textarea
+              pTextarea
+              id="Address"
+              formControlName="details"
+              style="resize: none"
+              class="h-28 w-full !border-main-color !bg-[#f1f5f9]"
+            ></textarea>
+            <label for="Address" class="!text-[#64748b]">Address</label>
+          </p-floatlabel>
+          @if (addressInput?.errors && addressInput?.touched) {
+          <p-message severity="error">This field is required.</p-message>
+          }
+        </div>
+
+        <div class="inline-flex flex-col gap-2">
+          <p-select
+            [options]="countries"
+            formControlName="city"
+            optionLabel="name"
+            optionValue="name"
+            placeholder="Select a country"
+            class="w-full !border-main-color !bg-[#f1f5f9]"
+          >
+            <ng-template #selectedItem let-selectedOption>
+              <div class="flex items-center gap-2" *ngIf="selectedOption">
+                <img
+                  [src]="
+                    'https://flagcdn.com/w40/' +
+                    selectedOption.code.toLowerCase() +
+                    '.png'
+                  "
+                  style="width: 18px"
+                />
+                <div>{{ selectedOption.name }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-country #item>
+              <div class="flex items-center gap-2">
+                <img
+                  [src]="
+                    'https://flagcdn.com/w40/' +
+                    country.code.toLowerCase() +
+                    '.png'
+                  "
+                  style="width: 18px"
+                />
+                <div>{{ country.name }}</div>
+              </div>
+            </ng-template>
+
+            <ng-template #dropdownicon>
+              <i class="pi pi-map"></i>
+            </ng-template>
+
+            <ng-template #header>
+              <div class="font-medium p-3">Available Countries</div>
+            </ng-template>
+          </p-select>
+        </div>
+      </form>
+
       <div class="flex items-center gap-4">
         <p-button
           label="Cancel"
           (click)="closeDialog()"
           [text]="true"
-          styleClass="!p-4 w-full !text-white !border !border-white/30 hover:!bg-white/10"
+          styleClass="!py-3 !px-4 w-full !text-white  !border !border-main-color !bg-main-color hover:!bg-secondry-color"
           class="w-full"
         />
         <p-button
           label="Add"
-          (click)="closeDialog()"
+          (click)="onSubmit()"
           [text]="true"
-          styleClass="!p-4 w-full !text-white !border !border-white/30 hover:!bg-white/10"
+          styleClass="!py-3 !px-4 w-full !text-white  !border !border-main-color !bg-main-color hover:!bg-secondry-color"
           class="w-full"
         />
       </div>
     </div>
   </ng-template>
 </p-dialog>
+<p-toast />
