@@ -89,7 +89,7 @@ export class NavbarComponent {
           {
             label: 'Orders',
             icon: 'pi pi-history',
-            routerLink: ['/orders'],
+            routerLink: ['/allorders'],
           },
           {
             label: 'Change Password',

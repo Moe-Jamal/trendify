@@ -1,0 +1,23 @@
+
+:host ::ng-deep {
+    .p-accordioncontent-content {
+        background-color: transparent;
+        color: #9d9daa;
+    }
+    .p-accordionpanel {
+        border: none;
+    }
+    .p-iconwrapper {
+        color: #8b5e35;
+    }
+    .p-menu-submenu-label {
+        padding: 0;
+    }
+    .p-menu {
+        min-width: auto ;
+    }
+    .p-paginator-page.p-paginator-page-selected {
+        background-color: #8b5e35;
+        color: white;
+    }
+}

@@ -1,1 +1,164 @@
-
+<div class="h-[88px]"></div>
+<div class="card flex justify-center py-8">
+  <p-breadcrumb class="container max-w-full" [model]="links">
+    <ng-template #item let-item>
+      <ng-container *ngIf="item.route; else elseBlock">
+        <a [routerLink]="item.route" class="p-breadcrumb-item-link">
+          <span [ngClass]="[item.icon ? item.icon : '', 'text-color']"></span>
+          <span class="text-main-color font-semibold">{{ item.label }}</span>
+        </a>
+      </ng-container>
+      <ng-template #elseBlock>
+        <span class="text-secText-color truncate">{{ item.label }}</span>
+      </ng-template>
+    </ng-template>
+  </p-breadcrumb>
+</div>
+<section class="container max-w-full py-sec-p">
+  <app-main-title>
+    <span class="top">Category</span>
+    <span class="bottom">{{ categoryName() }}</span>
+  </app-main-title>
+  <div class="grid lg:grid-cols-[300px_1fr] gap-5">
+    <div class="filter">
+      <h4 class="text-text-color text-[1.25rem] font-semibold mb-8">
+        Filter By
+      </h4>
+      <p-accordion [value]="['0']" [multiple]="true">
+        <p-accordion-panel value="0">
+          <p-accordion-header
+            class="!text-text-color !bg-transparent !px-0 !py-3"
+            >Category</p-accordion-header
+          >
+          <p-accordion-content>
+            <ul class="cateName flex flex-col gap-4 mt-1">
+              <li
+                class="cursor-pointer"
+                (click)="getProducts()"
+                [class]="
+                  categoryName() === 'All Products'
+                    ? 'text-text-color font-medium'
+                    : 'text-[#868484] font-normal'
+                "
+              >
+                All Products
+              </li>
+              @for (cate of categoriesList(); track cate._id) {
+              <li
+                class="cursor-pointer"
+                (click)="getProducts(cate._id)"
+                [class]="
+                  categoryName() === cate.name
+                    ? 'text-text-color font-medium'
+                    : 'text-[#868484] font-normal'
+                "
+              >
+                {{ cate.name }}
+              </li>
+              }
+            </ul>
+          </p-accordion-content>
+        </p-accordion-panel>
+        <p-accordion-panel value="1">
+          <p-accordion-header
+            class="!text-text-color !bg-transparent !px-0 !py-3"
+            >Price</p-accordion-header
+          >
+          <p-accordion-content class="!px-0">
+            <div class="card flex flex-col justify-center py-4 gap-5">
+              <p-slider
+                [(ngModel)]="rangeValues"
+                [range]="true"
+                [min]="0"
+                [max]="50000"
+                [step]="100"
+                [style.width.%]="100"
+              />
+              <div class="flex justify-between">
+                <span class="text-[#868484]"
+                  >From:
+                  <span class="text-text-color"
+                    >{{ rangeValues[0] }}EGP</span
+                  ></span
+                >
+                <span class="text-[#868484]"
+                  >To:
+                  <span class="text-text-color"
+                    >{{ rangeValues[1] }}EGP</span
+                  ></span
+                >
+              </div>
+              <button
+                class="bg-main-color py-2 w-full text-white hover:bg-secondry-color duration-300 transition-colors rounded-md"
+              >
+                Apply
+              </button>
+            </div>
+          </p-accordion-content>
+        </p-accordion-panel>
+      </p-accordion>
+    </div>
+    <div class="products flex flex-col gap-8">
+      <div class="flex justify-between gap-4">
+        <h3
+          class="text-[#151411] text-[1.125rem] sm:text-[2rem] flex items-center gap-3"
+        >
+          {{ categoryName() }}
+          <span class="text-base text-main-color">({{ productsNum() }})</span>
+        </h3>
+        <div>
+          <p-menu #menu [model]="sortOptions" [popup]="true" />
+          <button
+            class="flex gap-2 sm:gap-3 items-center px-5 py-3 border border-[#F9F9F9]"
+            (click)="menu.toggle($event)"
+          >
+            <svg
+              width="35"
+              height="36"
+              viewBox="0 0 35 36"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4.375 10.7085H30.625"
+                stroke="#151B33"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M8.75 18H26.25"
+                stroke="#151B33"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M14.582 25.2915H20.4154"
+                stroke="#151B33"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+            <span class="text-[#151411] font-medium sm:text-[1.125rem]"
+              >Sort By</span
+            >
+          </button>
+        </div>
+      </div>
+      <div>
+        <app-product-card
+          [products]="productList()"
+          [start]="0"
+        ></app-product-card>
+      </div>
+      <div class="card flex justify-center mt-8">
+        <p-paginator
+          #paginator
+          (onPageChange)="onPageChange($event)"
+          [first]="first"
+          [rows]="12"
+          [totalRecords]="productsNum()"
+        />
+      </div>
+    </div>
+  </div>
+</section>
