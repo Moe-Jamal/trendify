@@ -1,4 +1,4 @@
-import { Categories } from './../../shared/interfaces/categories';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { NgClass, NgIf } from '@angular/common';
 import {
   Component,
@@ -7,18 +7,21 @@ import {
   ViewChild,
   WritableSignal,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { AccordionModule } from 'primeng/accordion';
 import { MenuItem } from 'primeng/api';
 import { Breadcrumb } from 'primeng/breadcrumb';
-import { MainTitleComponent } from '../../shared/components/main-title/main-title.component';
-import { AccordionModule } from 'primeng/accordion';
-import { CategoryService } from '../../core/services/category/category.service';
-import { FormsModule } from '@angular/forms';
-import { Slider } from 'primeng/slider';
+import { ButtonModule } from 'primeng/button';
+import { DrawerModule } from 'primeng/drawer';
 import { Menu } from 'primeng/menu';
-import { IProduct } from '../../shared/interfaces/iproduct';
-import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
+import { Slider } from 'primeng/slider';
+import { CategoryService } from '../../core/services/category/category.service';
+import { MainTitleComponent } from '../../shared/components/main-title/main-title.component';
+import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
+import { IProduct } from '../../shared/interfaces/iproduct';
+import { Categories } from './../../shared/interfaces/categories';
 
 @Component({
   selector: 'app-shop',
@@ -41,9 +44,10 @@ import { Paginator, PaginatorModule } from 'primeng/paginator';
 export class ShopComponent {
   @ViewChild('paginator') paginator!: Paginator;
   private readonly categoryService = inject(CategoryService);
+  private readonly breakpointObserver = inject(BreakpointObserver);
   links: MenuItem[] | undefined;
   sortOptions: MenuItem[] | undefined;
-  rangeValues: number[] = [150, 45000];
+  rangeValues: WritableSignal<number[]> = signal([100, 45000]);
   categoryName: WritableSignal<string> = signal('All Products');
   categoryId: WritableSignal<string | undefined> = signal(undefined);
   categoriesList: WritableSignal<Categories[]> = signal([]);
@@ -51,7 +55,10 @@ export class ShopComponent {
   productsNum: WritableSignal<number> = signal(0);
   sortOrder: WritableSignal<string> = signal('price');
   numberOfPages: WritableSignal<number> = signal(0);
+  pageLinkSize: WritableSignal<number> = signal(5);
   first: number = 0;
+  filterVisible: WritableSignal<boolean> = signal(false);
+
   ngOnInit(): void {
     this.links = [{ label: 'Home', route: '/home' }, { label: 'Category' }];
     this.sortOptions = [
@@ -72,6 +79,11 @@ export class ShopComponent {
     ];
     this.getCategories();
     this.getProducts();
+    this.breakpointObserver
+      .observe([Breakpoints.Handset])
+      .subscribe((result) => {
+        this.pageLinkSize.set(result.matches ? 3 : 5);
+      });
   }
 
   getCategories(): void {
@@ -117,7 +129,13 @@ export class ShopComponent {
   }
 
   sortProducts(sort: string): void {
-    this.getProducts(this.categoryId(), undefined, undefined, undefined, sort);
+    this.getProducts(
+      this.categoryId(),
+      this.rangeValues()[0],
+      this.rangeValues()[1],
+      undefined,
+      sort
+    );
     this.sortOrder.set(sort);
     this.paginator.changePage(0);
   }
@@ -130,14 +148,17 @@ export class ShopComponent {
     });
     this.getProducts(
       this.categoryId(),
-      undefined,
-      undefined,
+      this.rangeValues()[0],
+      this.rangeValues()[1],
       page,
       this.sortOrder()
     );
   }
 
   resetPage(): void {
-    this.paginator.changePage(0);
+    this.paginator.first = 0;
+  }
+  resetRange(): void {
+    this.rangeValues.set([100, 45000]);
   }
 }

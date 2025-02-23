@@ -20,4 +20,11 @@
         background-color: #8b5e35;
         color: white;
     }
+   
+   @media (max-width: 640px) {
+    .p-paginator {
+        padding: 0.5rem .5rem;
+        gap: 0;
+    }
+   }
 }
