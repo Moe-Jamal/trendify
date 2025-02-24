@@ -14,8 +14,8 @@
     </ng-template>
   </p-breadcrumb>
 </div>
-@if (cartData()) {
-<section class="container max-w-full">
+<section class="container max-w-full min-h-screen">
+  @if (cartData()) {
   <div class="flex justify-between mb-6 items-center">
     <h2 class="text-text-color text-[40px] flex items-center">
       Cart
@@ -190,8 +190,8 @@
       </button>
     </div>
   </div>
+  }
 </section>
-}
 <div class="card flex justify-center">
   <p-toast />
   <p-confirmdialog #cd>
@@ -233,13 +233,18 @@
   </p-confirmdialog>
 </div>
 <section class="similer-products my-16 container max-w-full">
-  <h2 class="text-text-color font-semibold mb-5 text-[2rem] sm:text-[2.5rem]">
+  <h2
+    #activeDefer
+    class="text-text-color font-semibold mb-5 text-[2rem] sm:text-[2.5rem]"
+  >
     Similar products
   </h2>
+  @defer (on viewport(activeDefer)) {
   <app-product-card
     [products]="similerProducts()"
     [wishlistIDs]="wishlistIds()"
     [start]="start"
     [end]="end"
   ></app-product-card>
+  }
 </section>

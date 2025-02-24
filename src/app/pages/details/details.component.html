@@ -16,8 +16,8 @@
     </ng-template>
   </p-breadcrumb>
 </div>
-@if (productDetails) {
-<section class="product-details">
+<section class="product-details min-h-screen">
+  @if (productDetails) {
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 container max-w-full">
     <div class="flex flex-col sm:flex-row gap-6">
       <div class="product-images w-full sm:w-[75px] order-last sm:order-first">
@@ -417,17 +417,22 @@
       </p-accordion-panel>
     </p-accordion>
   </div>
+  }
 </section>
-}
 <section class="similer-products pb-[40px] container max-w-full">
-  <h2 class="text-text-color font-semibold mb-5 text-[2rem] sm:text-[2.5rem]">
+  <h2
+    #activeDefer
+    class="text-text-color font-semibold mb-5 text-[2rem] sm:text-[2.5rem]"
+  >
     Similar products
   </h2>
+  @defer (on viewport(activeDefer)) {
   <app-product-card
     [products]="similerProducts"
     [wishlistIDs]="wishlistIds()"
     [start]="0"
     [end]="5"
   ></app-product-card>
+  }
 </section>
 <p-toast />
