@@ -12,8 +12,6 @@ import { RouterLink } from '@angular/router';
 import { AccordionModule } from 'primeng/accordion';
 import { MenuItem } from 'primeng/api';
 import { Breadcrumb } from 'primeng/breadcrumb';
-import { ButtonModule } from 'primeng/button';
-import { DrawerModule } from 'primeng/drawer';
 import { Menu } from 'primeng/menu';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { Slider } from 'primeng/slider';
