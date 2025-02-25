@@ -168,10 +168,20 @@
         </div>
       </div>
       <div>
+        @if (productList().length < 1 && loading()) {
+        <div>
+          <h4
+            class="text-text-color text-[1.5rem] sm:text-3xl text-center leading-relaxed py-10"
+          >
+            No items available in this category yet! 🛒🚫
+          </h4>
+        </div>
+        }@else {
         <app-product-card
           [products]="productList()"
           [start]="0"
         ></app-product-card>
+        }
       </div>
       @if (numberOfPages()) {
       <div class="card flex justify-center mt-8">

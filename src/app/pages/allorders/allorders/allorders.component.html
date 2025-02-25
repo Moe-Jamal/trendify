@@ -14,11 +14,11 @@
     </ng-template>
   </p-breadcrumb>
 </div>
-<section class="container max-w-full py-10">
+<section class="container max-w-full py-10 min-h-screen">
   <h1 class="text-3xl text-text-color mb-4">Orders Details</h1>
   <div class="grid xl:grid-cols-2 gap-3">
-    @for (order of ordersData(); track order._id) {
-    <div class="bg-white rounded-lg p-3 sm:p-5 flex flex-col gap-3 h-fit">
+    @if (ordersData()) { @for (order of ordersData(); track order._id) {
+    <div class="bg-white rounded-lg p-3 sm:p-5 flex flex-col gap-3">
       <div class="flex justify-between items-center">
         <h3 class="text-text-color sm:text-2xl">Order ID: {{ order.id }}</h3>
         <div class="status flex gap-2">
@@ -39,7 +39,9 @@
           >
         </div>
       </div>
-      <div class="border border-[#D1D1D8] p-2 rounded-md flex flex-col gap-2">
+      <div
+        class="custom-scrollbar border border-[#D1D1D8] p-2 rounded-md flex flex-col gap-2 flex-grow xl:max-h-[250px] xl:overflow-y-auto"
+      >
         @for (orderitem of order.cartItems; track $index) {
         <div
           class="flex justify-between gap-2 items-center"
@@ -77,7 +79,7 @@
         </div>
         }
       </div>
-      <div class="flex flex-col md:flex-row gap-3 justify-between">
+      <div class="flex flex-col md:flex-row gap-3 justify-between mt-auto">
         <div
           class="detils flex flex-col bg-[#F9F9F9] p-3 rounded-md h-fit gap-2 flex-grow"
         >
@@ -131,6 +133,19 @@
         </div>
       </div>
     </div>
-    }
+    } @empty {
+    <div
+      class="col-span-2 bg-white rounded-lg h-[300px] px-10 flex justify-center items-center text-center"
+    >
+      <h4>
+        You have currently <span class="font-semibold">0 items</span> in your
+        cart.
+        <a routerLink="/shop"
+          ><span class="underline me-2">Go To Shop</span>
+          <i class="fa-solid fa-arrow-right-long"></i
+        ></a>
+      </h4>
+    </div>
+    } }
   </div>
 </section>

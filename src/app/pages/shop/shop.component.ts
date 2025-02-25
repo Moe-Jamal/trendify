@@ -2,7 +2,9 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { NgClass, NgIf } from '@angular/common';
 import {
   Component,
+  computed,
   inject,
+  Signal,
   signal,
   ViewChild,
   WritableSignal,
@@ -61,6 +63,8 @@ export class ShopComponent {
   sortOrder: WritableSignal<string> = signal('price');
   numberOfPages: WritableSignal<number> = signal(0);
   pageLinkSize: WritableSignal<number> = signal(5);
+  loading: Signal<boolean> = computed(() => this.categoryService.contentload());
+
   first: number = 0;
   filterVisible: WritableSignal<boolean> = signal(false);
 

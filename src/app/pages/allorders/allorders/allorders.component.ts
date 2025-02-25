@@ -17,7 +17,7 @@ export class AllordersComponent {
   private readonly ordersService = inject(OrdersService);
   private readonly authService = inject(AuthService);
   links: MenuItem[] | undefined;
-  ordersData: WritableSignal<IOrder[]> = signal([]);
+  ordersData: WritableSignal<IOrder[] | undefined> = signal(undefined);
   userId: string | undefined = this.authService.userData?.id;
   ngOnInit(): void {
     this.links = [{ label: 'Home', route: '/home' }, { label: 'Orders' }];
@@ -28,7 +28,7 @@ export class AllordersComponent {
     this.ordersService.getUserOrders(userId).subscribe({
       next: (res) => {
         console.log(res);
-        this.ordersData.set(res);
+        this.ordersData.set(res.reverse());
       },
       error: (err) => {
         console.log(err);

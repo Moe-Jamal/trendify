@@ -1,20 +1,23 @@
 import { SlicePipe } from '@angular/common';
 import {
   Component,
+  computed,
   effect,
   inject,
   input,
   Input,
   InputSignal,
+  Signal,
   signal,
   WritableSignal,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { CartService } from '../../../core/services/cart/cart.service';
-import { IProduct } from '../../interfaces/iproduct';
 import { Toast } from 'primeng/toast';
+import { CartService } from '../../../core/services/cart/cart.service';
 import { WishlistService } from '../../../core/services/wishlist/wishlist.service';
+import { IProduct } from '../../interfaces/iproduct';
+import { CategoryService } from '../../../core/services/category/category.service';
 
 @Component({
   selector: 'app-product-card',
@@ -32,7 +35,7 @@ export class ProductCardComponent {
   private readonly cartService = inject(CartService);
   private readonly messageService = inject(MessageService);
   private readonly wishlistService = inject(WishlistService);
-
+  private readonly categoryService = inject(CategoryService);
   @Input() products: IProduct[] = [];
   @Input() start: number = 0;
   @Input() end?: number;
