@@ -1,1 +1,136 @@
-<p>allorders works!</p>
+<div class="h-[88px]"></div>
+<div class="card flex justify-center py-8">
+  <p-breadcrumb class="container max-w-full" [model]="links">
+    <ng-template #item let-item>
+      <ng-container *ngIf="item.route; else elseBlock">
+        <a [routerLink]="item.route" class="p-breadcrumb-item-link">
+          <span [ngClass]="[item.icon ? item.icon : '', 'text-color']"></span>
+          <span class="text-main-color font-semibold">{{ item.label }}</span>
+        </a>
+      </ng-container>
+      <ng-template #elseBlock>
+        <span class="text-secText-color truncate">{{ item.label }}</span>
+      </ng-template>
+    </ng-template>
+  </p-breadcrumb>
+</div>
+<section class="container max-w-full py-10">
+  <h1 class="text-3xl text-text-color mb-4">Orders Details</h1>
+  <div class="grid xl:grid-cols-2 gap-3">
+    @for (order of ordersData(); track order._id) {
+    <div class="bg-white rounded-lg p-3 sm:p-5 flex flex-col gap-3 h-fit">
+      <div class="flex justify-between items-center">
+        <h3 class="text-text-color sm:text-2xl">Order ID: {{ order.id }}</h3>
+        <div class="status flex gap-2">
+          @if (order.isPaid) {
+          <span
+            class="text-[#22c55e] bg-[#f0fdf4] px-2 py-2 sm:px-3 rounded-lg text-sm text-center h-fit"
+            >Paid</span
+          >
+          }@else {
+          <span
+            class="text-[#f97316] bg-[#fff7ed] px-2 py-2 sm:px-3 rounded-lg text-sm text-center h-fit"
+            >Unpaid</span
+          >
+          }
+          <span
+            class="text-[#0ea5e9] bg-[#f0f9ff] px-2 py-2 sm:px-3 rounded-lg text-sm text-center text-nowrap"
+            >On Delivery</span
+          >
+        </div>
+      </div>
+      <div class="border border-[#D1D1D8] p-2 rounded-md flex flex-col gap-2">
+        @for (orderitem of order.cartItems; track $index) {
+        <div
+          class="flex justify-between gap-2 items-center"
+          [class]="{
+            'border-[#D1D1D8]': !$first,
+            'border-t': !$first,
+            'pt-2': !$first
+          }"
+        >
+          <div class="flex gap-3 items-center">
+            <div class="min-w-[100px] h-[100px]">
+              <img
+                [src]="orderitem.product.imageCover"
+                class="w-full h-full object-cover rounded-md"
+                [alt]="orderitem.product.title"
+              />
+            </div>
+            <div class="flex flex-col gap-1">
+              <h3 class="text-text-color sm:text-[1.25rem]">
+                {{ orderitem.product.title.split(" ", 3).join(" ") }}
+              </h3>
+              <span class="text-secText-color">{{
+                orderitem.product.brand.name
+              }}</span>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1">
+            <h3 class="text-text-color sm:text-[1.25rem]">
+              {{ orderitem.price }}EGP
+            </h3>
+            <span class="text-secText-color self-end"
+              >Qyt: {{ orderitem.count }}</span
+            >
+          </div>
+        </div>
+        }
+      </div>
+      <div class="flex flex-col md:flex-row gap-3 justify-between">
+        <div
+          class="detils flex flex-col bg-[#F9F9F9] p-3 rounded-md h-fit gap-2 flex-grow"
+        >
+          <span class="text-secText-color">
+            <span class="font-medium text-text-color">Mobile:</span>
+            {{ order.shippingAddress.phone }}
+          </span>
+          <span class="text-secText-color">
+            <span class="font-medium text-text-color">Address:</span>
+            {{ order.shippingAddress.details }}
+          </span>
+          <span class="text-secText-color">
+            <span class="font-medium text-text-color">City:</span>
+            Giza
+          </span>
+          <span class="text-secText-color">
+            <span class="font-medium text-text-color">Country:</span>
+            {{ order.shippingAddress.city }}
+          </span>
+          <span class="text-secText-color">
+            <span class="font-medium text-text-color">Payment Method:</span>
+            {{ order.paymentMethodType }}
+          </span>
+        </div>
+        <div class="bg-[#F9F9F9] p-3 rounded-md h-fit">
+          <ul
+            class="flex flex-col gap-y-5 pb-5 mb-5 border-b border-[#D1D1D8] text-text-color"
+          >
+            <li class="flex justify-between gap-32 xl:gap-16">
+              <span>Subtotal</span>
+              <span class="text-secText-color"
+                >{{ order.totalOrderPrice }}EGP</span
+              >
+            </li>
+            <li class="flex justify-between gap-32 xl:gap-16">
+              <span>Shipping</span>
+              <span class="text-secText-color"
+                >{{ order.shippingPrice }}.00EGP</span
+              >
+            </li>
+            <li class="flex justify-between gap-32 xl:gap-16">
+              <span>Tax</span>
+              <span class="text-secText-color">{{ order.taxPrice }}.00EGP</span>
+            </li>
+          </ul>
+
+          <div class="flex justify-between gap-32 xl:gap-16 text-text-color">
+            <span class="font-medium">Total</span>
+            <span class="font-medium">{{ order.totalOrderPrice }}EGP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</section>

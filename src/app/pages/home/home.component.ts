@@ -13,6 +13,7 @@ import { IProduct } from '../../shared/interfaces/iproduct';
 import { CategorySliderComponent } from './components/category-slider/category-slider.component';
 import { HomeSliderComponent } from './components/home-slider/home-slider.component';
 import { WishlistService } from '../../core/services/wishlist/wishlist.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -21,6 +22,7 @@ import { WishlistService } from '../../core/services/wishlist/wishlist.service';
     HomeSliderComponent,
     MainTitleComponent,
     ProductCardComponent,
+    RouterLink,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',

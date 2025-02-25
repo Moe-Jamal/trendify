@@ -12,10 +12,11 @@ import {
 import { CategoryService } from '../../../../core/services/category/category.service';
 import { Categories } from '../../../../shared/interfaces/categories';
 import { SwiperContainer } from 'swiper/element';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-category-slider',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './category-slider.component.html',
   styleUrl: './category-slider.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

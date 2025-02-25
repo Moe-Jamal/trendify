@@ -8,7 +8,12 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import {
+  NavigationEnd,
+  NavigationStart,
+  Router,
+  RouterLink,
+} from '@angular/router';
 import { AccordionModule } from 'primeng/accordion';
 import { MenuItem } from 'primeng/api';
 import { Breadcrumb } from 'primeng/breadcrumb';
@@ -20,6 +25,7 @@ import { MainTitleComponent } from '../../shared/components/main-title/main-titl
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { IProduct } from '../../shared/interfaces/iproduct';
 import { Categories } from './../../shared/interfaces/categories';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-shop',
@@ -43,6 +49,7 @@ export class ShopComponent {
   @ViewChild('paginator') paginator!: Paginator;
   private readonly categoryService = inject(CategoryService);
   private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly router = inject(Router);
   links: MenuItem[] | undefined;
   sortOptions: MenuItem[] | undefined;
   rangeValues: WritableSignal<number[]> = signal([100, 45000]);
