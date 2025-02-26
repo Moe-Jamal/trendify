@@ -94,7 +94,7 @@ export const routes: Routes = [
           import('./pages/allorders/allorders/allorders.component').then(
             (m) => m.AllordersComponent
           ),
-        title: 'All Orders',
+        title: 'My Orders',
       },
       {
         path: 'contact-us',

@@ -10,12 +10,7 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {
-  NavigationEnd,
-  NavigationStart,
-  Router,
-  RouterLink,
-} from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AccordionModule } from 'primeng/accordion';
 import { MenuItem } from 'primeng/api';
 import { Breadcrumb } from 'primeng/breadcrumb';
@@ -23,11 +18,11 @@ import { Menu } from 'primeng/menu';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 import { Slider } from 'primeng/slider';
 import { CategoryService } from '../../core/services/category/category.service';
+import { WishlistService } from '../../core/services/wishlist/wishlist.service';
 import { MainTitleComponent } from '../../shared/components/main-title/main-title.component';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { IProduct } from '../../shared/interfaces/iproduct';
 import { Categories } from './../../shared/interfaces/categories';
-import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-shop',
@@ -51,6 +46,7 @@ export class ShopComponent {
   @ViewChild('paginator') paginator!: Paginator;
   private readonly categoryService = inject(CategoryService);
   private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly wishlistService = inject(WishlistService);
   private readonly router = inject(Router);
   links: MenuItem[] | undefined;
   sortOptions: MenuItem[] | undefined;
@@ -63,6 +59,7 @@ export class ShopComponent {
   sortOrder: WritableSignal<string> = signal('price');
   numberOfPages: WritableSignal<number> = signal(0);
   pageLinkSize: WritableSignal<number> = signal(5);
+  wishlistIds: WritableSignal<string[]> = signal([]);
   loading: Signal<boolean> = computed(() => this.categoryService.contentload());
 
   first: number = 0;
@@ -93,6 +90,7 @@ export class ShopComponent {
       .subscribe((result) => {
         this.pageLinkSize.set(result.matches ? 3 : 5);
       });
+    this.getUserWishlist();
   }
 
   getCategories(): void {
@@ -169,5 +167,16 @@ export class ShopComponent {
   }
   resetRange(): void {
     this.rangeValues.set([100, 45000]);
+  }
+
+  getUserWishlist(): void {
+    this.wishlistService.setGetWishlist().subscribe({
+      next: (res) => {
+        this.wishlistIds.set(res.data.map((element: any) => element.id));
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 }

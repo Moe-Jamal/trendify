@@ -86,7 +86,6 @@ export class RegisterComponent {
       this.isLoading = true;
       let registerData = { ...this.registerForm.value };
       delete registerData.terms;
-      console.log(registerData);
       this.authService.setRegisterData(registerData).subscribe({
         next: (res) => {
           if (res.message === 'success') {

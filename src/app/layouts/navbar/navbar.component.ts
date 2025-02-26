@@ -4,6 +4,8 @@ import {
   ElementRef,
   HostListener,
   inject,
+  output,
+  OutputEmitterRef,
   Signal,
   ViewChild,
 } from '@angular/core';
@@ -46,6 +48,7 @@ export class NavbarComponent {
   private readonly cartService = inject(CartService);
   private readonly wishlistService = inject(WishlistService);
   @ViewChild('mobileMenu') mobileMenu!: ElementRef;
+  openDialog: OutputEmitterRef<void> = output<void>();
   items: MenuItem[] | undefined;
   userName: string = '';
   isMenuOpen: boolean = false;
@@ -94,7 +97,7 @@ export class NavbarComponent {
           {
             label: 'Change Password',
             icon: 'pi pi-user-edit',
-            routerLink: ['/change-password'],
+            command: () => this.onOpen(),
           },
           {
             label: 'LogOut',
@@ -132,6 +135,10 @@ export class NavbarComponent {
   closeMenu() {
     this.isMenuOpen = false;
     this.menuHeight = 0;
+  }
+
+  onOpen(): void {
+    this.openDialog.emit();
   }
 
   @HostListener('window:scroll', [])

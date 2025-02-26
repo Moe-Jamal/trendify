@@ -1,1 +1,205 @@
-<p>about-us works!</p>
+<div class="h-[88px]" aria-hidden="true"></div>
+<div class="card flex justify-center py-8">
+  <p-breadcrumb class="container max-w-full" [model]="items">
+    <ng-template #item let-item>
+      <ng-container *ngIf="item.route; else elseBlock">
+        <a [routerLink]="item.route" class="p-breadcrumb-item-link">
+          <span [ngClass]="[item.icon ? item.icon : '', 'text-color']"></span>
+          <span class="text-main-color font-semibold">{{ item.label }}</span>
+        </a>
+      </ng-container>
+      <ng-template #elseBlock>
+        <span class="text-secText-color truncate">{{
+          item.label.split(" ", 3)?.join(" ")
+        }}</span>
+      </ng-template>
+    </ng-template>
+  </p-breadcrumb>
+</div>
+<section class="container max-w-full pb-72 sm:pb-52 pt-10 md:py-10">
+  <div class="md:grid md:grid-cols-[20%_1fr] relative">
+    <div class="hidden md:block"></div>
+    <div class="w-full md:h-[600px] border border-[#EAECF0] rounded-[2.5rem]">
+      <img
+        src="/images/about-us.jpg"
+        class="w-full h-full object-cover rounded-[2.5rem]"
+        alt="about-us"
+      />
+    </div>
+    <div
+      class="mx-auto absolute right-0 left-0 md:right-[unset] md:top-1/2 -translate-y-1/2 bg-white rounded-[2.5rem] md:rounded-[1.25rem] p-8 flex flex-col gap-4 max-w-[500px]"
+    >
+      <svg
+        width="39"
+        height="25"
+        viewBox="0 0 39 25"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M17.6519 15.9979C17.6519 11.4092 14.36 7.85402 10.0566 7.85402C7.99207 7.85402 6.1184 8.63482 4.74998 10.172H4.19854C5.11227 7.10737 8.0376 4.42311 11.8606 3.36808C12.3946 3.20669 12.7887 3.04698 13.0382 2.81295C13.312 2.58025 13.4627 2.27321 13.4627 1.86406C13.4627 1.1067 12.8667 0.572998 12.0106 0.572998C11.3681 0.572998 10.894 0.688511 10.0596 0.959045C7.79754 1.70938 5.72467 3.01685 4.09944 4.72578C1.77913 7.13582 0.425781 10.3478 0.425781 14.0733C0.425781 20.526 4.49151 24.2673 9.37922 24.2673C14.1066 24.2673 17.6519 20.7155 17.6519 15.9979ZM38.3426 15.9979C38.3426 11.4092 35.0339 7.85402 30.7472 7.85402C28.6796 7.85402 26.7892 8.63482 25.4406 10.172H24.8831C25.8029 7.10737 28.7252 4.42311 32.5375 3.36808C33.0685 3.20669 33.4794 3.04698 33.7258 2.81295C33.9996 2.58025 34.1396 2.27321 34.1396 1.86406C34.1396 1.1067 33.5544 0.572998 32.7012 0.572998C32.0419 0.572998 31.5846 0.688511 30.7365 0.959045C28.4882 1.70938 26.4015 3.01685 24.7734 4.72578C22.4698 7.13582 21.1164 10.3478 21.1164 14.0733C21.1164 20.526 25.1821 24.2673 30.0668 24.2673C34.7972 24.2673 38.3426 20.7155 38.3426 15.9979Z"
+          fill="#8B5E35"
+        />
+      </svg>
+      <p class="text-[#344054] italic font-medium text-[20px]">
+        We are glad to present you our most perfect Shopify theme, which
+        supports Sections Everywhere, very high metric scores by google page
+        speed insight. This is the most mobile-oriented theme that will be
+        convenient on any of your devices.
+      </p>
+      <div class="flex justify-between items-center">
+        <span class="text-text-color font-semibold">Jack Donowan</span>
+        <img src="/images/about-sign.png" class="w-[150px]" alt="about-us" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-white py-sec-p">
+  <div class="container max-w-full flex flex-col gap-8 lg:gap-20">
+    <div class="title text-center">
+      <h2 class="text-text-color text-[1.75rem] sm:text-[2.25rem] font-bold">
+        A few words about us
+      </h2>
+      <p class="text-secText-color text-sm">
+        Make your best moments more stylish with our latest designs of clothing.
+      </p>
+    </div>
+    <div
+      class="grid lg:grid-cols-12 justify-center items-center gap-12 lg:gap-16 xl:gap-24"
+    >
+      <div class="lg:col-span-6 lg:max-w-full mx-auto relative">
+        <img
+          src="/images/about1.webp"
+          class="object-cover rounded-[2.1875rem] z-30 relative"
+          alt="about-1"
+          loading="lazy"
+        />
+        <div
+          class="bg-[#EAECF0] absolute bottom-[-20px] h-[40px] left-[15%] right-[15%] rounded-full"
+        ></div>
+        <div
+          class="bg-[#EAECF0] opacity-50 absolute bottom-[-35px] h-[30px] left-[20%] right-[20%] rounded-full"
+        ></div>
+      </div>
+      <div class="lg:col-span-6">
+        <h4 class="text-text-color text-[1.5rem] mb-4 font-bold">
+          Why choose us ?
+        </h4>
+        <p class="text-secText-color sm:text-[1.125rem]">
+          Maecenas congue metus id turpis iaculis mattis. Sed pellentesque id
+          arcu id scelerisque. Ut ullamcorper rutrum justo, at blandit eros
+          maximus ut. Integer non tincidunt justo, rhoncus Aenean venenatis sed
+          purus ac sollicitudin. Nulla mauris risus, commodo et luctus rutrum,
+          lobortis sed mauris. Integer congue, sem elementum varius tristique.
+        </p>
+      </div>
+    </div>
+    <div
+      class="grid lg:grid-cols-12 justify-center items-center gap-12 lg:gap-16 xl:gap-24"
+    >
+      <div class="lg:col-span-6 lg:max-w-full mx-auto relative">
+        <img
+          src="/images/about2.webp"
+          class="object-cover rounded-[2.1875rem] z-30 relative"
+          alt="about-2"
+          loading="lazy"
+        />
+        <div
+          class="bg-[#EAECF0] absolute bottom-[-20px] h-[40px] left-[15%] right-[15%] rounded-full"
+        ></div>
+        <div
+          class="bg-[#EAECF0] opacity-50 absolute bottom-[-35px] h-[30px] left-[20%] right-[20%] rounded-full"
+        ></div>
+      </div>
+      <div class="lg:col-span-6 lg:order-first">
+        <h4 class="text-text-color text-[1.5rem] mb-4 font-bold">
+          Trusted online shopping
+        </h4>
+        <p class="text-secText-color sm:text-[1.125rem]">
+          Maecenas congue metus id turpis iaculis mattis. Sed pellentesque id
+          arcu id scelerisque. Ut ullamcorper rutrum justo, at blandit eros
+          maximus ut. Integer non tincidunt justo, rhoncus Aenean venenatis sed
+          purus ac sollicitudin. Nulla mauris risus, commodo et luctus rutrum,
+          lobortis sed mauris. Integer congue, sem elementum varius tristique.
+        </p>
+      </div>
+    </div>
+    <div
+      class="grid lg:grid-cols-12 justify-center items-center gap-12 lg:gap-16 xl:gap-24"
+    >
+      <div class="lg:col-span-6 lg:max-w-full mx-auto relative">
+        <img
+          src="/images/about3.webp"
+          class="object-cover rounded-[2.1875rem] z-30 relative"
+          alt="about-3"
+          loading="lazy"
+        />
+        <div
+          class="bg-[#EAECF0] absolute bottom-[-20px] h-[40px] left-[15%] right-[15%] rounded-full"
+        ></div>
+        <div
+          class="bg-[#EAECF0] opacity-50 absolute bottom-[-35px] h-[30px] left-[20%] right-[20%] rounded-full"
+        ></div>
+      </div>
+      <div class="lg:col-span-6">
+        <h4 class="text-text-color text-[1.5rem] mb-4 font-bold">
+          Trusted online shopping
+        </h4>
+        <p class="text-secText-color sm:text-[1.125rem]">
+          Maecenas congue metus id turpis iaculis mattis. Sed pellentesque id
+          arcu id scelerisque. Ut ullamcorper rutrum justo, at blandit eros
+          maximus ut. Integer non tincidunt justo, rhoncus Aenean venenatis sed
+          purus ac sollicitudin. Nulla mauris risus, commodo et luctus rutrum,
+          lobortis sed mauris. Integer congue, sem elementum varius tristique.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="bg-white flex flex-col gap-10">
+  <div class="conatiner max-w-full flex flex-col gap-3 text-center">
+    <h3
+      class="text-text-color sm:text-[2.25rem] text-center flex gap-3 items-center justify-center"
+    >
+      <i class="fa-brands fa-instagram"></i>
+      <span class="text-main-color italic font-bold">#iconic_fashion</span>
+      <span class="font-bold">On Instagram</span>
+    </h3>
+    <p class="text-secText-color text-sm">
+      Phasellus lorem malesuada ligula pulvinar commodo maecenas
+    </p>
+  </div>
+  <div class="flex">
+    <img
+      src="/images/about-footer11.jpg"
+      class="w-[20%] rounded-md object-cover"
+      alt="about-footer1"
+      loading="lazy"
+    />
+    <img
+      src="/images/about-footer2.webp"
+      class="w-[20%] rounded-md object-cover"
+      alt="about-footer2"
+      loading="lazy"
+    />
+    <img
+      src="/images/about-footer3.webp"
+      class="w-[20%] rounded-md object-cover"
+      alt="about-footer3"
+      loading="lazy"
+    />
+    <img
+      src="/images/about-footer4.webp"
+      class="w-[20%] rounded-md object-cover"
+      alt="about-footer4"
+      loading="lazy"
+    />
+    <img
+      src="/images/about-footer55.jpg"
+      class="w-[20%] rounded-md object-cover"
+      alt="about-footer5"
+      loading="lazy"
+    />
+  </div>
+</section>

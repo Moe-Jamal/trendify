@@ -60,6 +60,13 @@ export class AuthService {
     );
   }
 
+  setChangePassword(data: object): Observable<any> {
+    return this.httpClient.put(
+      `${environment.baseUrl}/api/v1/users/changeMyPassword`,
+      data
+    );
+  }
+
   logout(): void {
     localStorage.removeItem('authToken');
     this.userData = null;

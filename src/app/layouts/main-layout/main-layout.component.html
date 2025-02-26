@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+<app-navbar (openDialog)="showDialog()"></app-navbar>
 <router-outlet></router-outlet>
 <ngx-spinner
   bdColor="rgba(0, 0, 0, 0.8)"
@@ -8,4 +8,138 @@
   [fullScreen]="true"
   ><p style="color: white" class="text-2xl">Loading...</p></ngx-spinner
 >
+<p-dialog
+  maskStyleClass="bg-[rgba(0,0,0,0.8)]"
+  [(visible)]="visible"
+  styleClass="!border-0 !bg-transparent"
+>
+  <ng-template #headless>
+    <div
+      class="flex flex-col sm:px-8 sm:py-8 gap-5 rounded-2xl bg-white shadow-lg w-full p-4"
+      style="border-radius: 12px"
+    >
+      <h2 class="!text-text-color text-2xl text-center">Change Password</h2>
+      <form [formGroup]="changePassword" class="flex flex-col changePassword">
+        <div class="flex flex-col gap-2 mb-5">
+          @let oldPassword = changePassword.get('currentPassword');
+          <label for="password" class="text-[1.125rem] text-text-color"
+            >Old Password</label
+          >
+          <p-iconfield>
+            <p-inputicon
+              class="fa-solid fa-lock fa-bounce !text-secondry-color"
+            ></p-inputicon>
+            <input
+              [type]="isPasswordVisible ? 'text' : 'password'"
+              pInputText
+              placeholder="xxxxxxxxxxxx"
+              class="w-full sm:w-[450px]"
+              formControlName="currentPassword"
+            />
+            <p-inputicon
+              class="fa-solid !text-secondry-color cursor-pointer"
+              (click)="showHidePassword()"
+              [class.fa-eye-slash]="!isPasswordVisible"
+              [class.fa-eye]="isPasswordVisible"
+            ></p-inputicon>
+          </p-iconfield>
+          @if (oldPassword?.errors && oldPassword?.touched) { @if
+          (oldPassword?.getError('required')) {
+          <p-message severity="error" class="w-full sm:w-[450px]"
+            >This field is required.</p-message
+          >
+          } @else if (oldPassword?.getError('pattern')) {
+          <p-message severity="error" class="w-full sm:w-[450px]"
+            >Password Must start with an uppercase letter and be at least 8
+            characters long.</p-message
+          >
+          } }
+        </div>
+        <div class="flex flex-col gap-2 mb-5">
+          @let newPassword = changePassword.get('password');
+          <label for="password" class="text-[1.125rem] text-text-color"
+            >New Password</label
+          >
+          <p-iconfield>
+            <p-inputicon
+              class="fa-solid fa-lock fa-bounce !text-secondry-color"
+            ></p-inputicon>
+            <input
+              [type]="isPasswordVisible ? 'text' : 'password'"
+              pInputText
+              placeholder="xxxxxxxxxxxx"
+              class="w-full sm:w-[450px]"
+              formControlName="password"
+            />
+            <p-inputicon
+              class="fa-solid !text-secondry-color cursor-pointer"
+              (click)="showHidePassword()"
+              [class.fa-eye-slash]="!isPasswordVisible"
+              [class.fa-eye]="isPasswordVisible"
+            ></p-inputicon>
+          </p-iconfield>
+          @if (newPassword?.errors && newPassword?.touched) { @if
+          (newPassword?.getError('required')) {
+          <p-message severity="error" class="w-full sm:w-[450px]"
+            >This field is required.</p-message
+          >
+          } @else if (newPassword?.getError('pattern')) {
+          <p-message severity="error" class="w-full sm:w-[450px]"
+            >Password Must start with an uppercase letter and be at least 8
+            characters long.</p-message
+          >
+          } }
+        </div>
+        <div class="flex flex-col gap-2 mb-5">
+          <label for="rePassword" class="text-[1.125rem] text-text-color"
+            >Confirm Password</label
+          >
+          <p-iconfield>
+            <p-inputicon
+              class="fa-solid fa-lock fa-bounce !text-secondry-color"
+            ></p-inputicon>
+            <input
+              [type]="isPasswordVisible ? 'text' : 'password'"
+              pInputText
+              placeholder="xxxxxxxxxxxx"
+              class="w-full sm:w-[450px]"
+              formControlName="rePassword"
+            />
+            <p-inputicon
+              class="fa-solid !text-secondry-color cursor-pointer"
+              (click)="showHidePassword()"
+              [class.fa-eye-slash]="!isPasswordVisible"
+              [class.fa-eye]="isPasswordVisible"
+            ></p-inputicon>
+          </p-iconfield>
+          @if (changePassword.getError('mismatch') &&
+          changePassword.get('rePassword')?.touched) {
+          <p-message severity="error" class="w-full sm:w-[450px]"
+            >Passwords do not match.</p-message
+          >
+          }
+        </div>
+      </form>
+
+      <div class="flex items-center gap-4">
+        <p-button
+          label="Cancel"
+          (click)="closeDialog()"
+          [text]="true"
+          styleClass="!py-3 !px-4 w-full !text-white  !border !border-main-color !bg-main-color hover:!bg-secondry-color"
+          class="w-full"
+        />
+        <p-button
+          label="Change"
+          (click)="onSubmit()"
+          [text]="true"
+          styleClass="!py-3 !px-4 w-full !text-white  !border !border-main-color !bg-main-color hover:!bg-secondry-color"
+          class="w-full"
+        />
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>
+<p-toast />
+
 <app-footer></app-footer>

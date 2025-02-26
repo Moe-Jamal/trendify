@@ -4,3 +4,15 @@
     justify-content: space-between;
     min-height: 100vh;
 }
+
+:host ::ng-deep {
+    .changePassword {
+        .p-inputtext {
+            color: #090f41;
+            padding-block: 12px;
+        }
+        .p-inputtext:enabled:focus {
+            border: 1px solid #8B5E35;
+        }
+    }
+}
