@@ -1,0 +1,12 @@
+:host ::ng-deep  {
+    .p-checkbox-checked .p-checkbox-box
+    {
+        background: #8B5E35;
+        border-color: #8B5E35;
+    }
+
+    .p-checkbox-checked:not(.p-disabled):has(.p-checkbox-input:hover) .p-checkbox-box {
+        border-color: #9B7E5C;
+        background: #9B7E5C;
+    }
+}

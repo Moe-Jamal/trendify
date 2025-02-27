@@ -1,1 +1,120 @@
-<p>contact-us works!</p>
+<div class="h-[88px]" aria-hidden="true"></div>
+<div class="card flex justify-center py-8">
+  <p-breadcrumb class="container max-w-full" [model]="items">
+    <ng-template #item let-item>
+      <ng-container *ngIf="item.route; else elseBlock">
+        <a [routerLink]="item.route" class="p-breadcrumb-item-link">
+          <span [ngClass]="[item.icon ? item.icon : '', 'text-color']"></span>
+          <span class="text-main-color font-semibold">{{ item.label }}</span>
+        </a>
+      </ng-container>
+      <ng-template #elseBlock>
+        <span class="text-secText-color truncate">{{
+          item.label.split(" ", 3)?.join(" ")
+        }}</span>
+      </ng-template>
+    </ng-template>
+  </p-breadcrumb>
+</div>
+<section class="container max-w-full pt-[40px] pb-[60px]">
+  <div class="title mb-8">
+    <h1 class="text-[2rem] sm:text-[2.5rem] text-text-color font-semibold">
+      Contact us
+    </h1>
+    <p class="text-secText-color font-medium sm:text-[1.125rem]">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor
+    </p>
+  </div>
+  <form>
+    <div class="flex flex-col gap-5 sm:gap-8 lg:w-[75%] xl:w-[60%]">
+      <div class="grid sm:grid-cols-2 gap-x-8 gap-5 w-full">
+        <div class="flex flex-col gap-2">
+          <label for="firstName" class="text-text-color sm:text-[1.25rem]"
+            >First name</label
+          >
+          <input
+            pInputText
+            id="firstName"
+            tabindex="text"
+            aria-describedby="firstName-help"
+            class="p-3 rounded-lg outline-none border-[0.5px] border-main-color"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="lastName" class="text-text-color sm:text-[1.25rem]"
+            >Last name</label
+          >
+          <input
+            pInputText
+            id="lastName"
+            type="text"
+            aria-describedby="lastName-help"
+            class="p-3 w-full rounded-lg outline-none border-[0.5px] border-main-color"
+          />
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-x-8 gap-5 w-full">
+        <div class="flex flex-col gap-2">
+          <label for="email" class="text-text-color sm:text-[1.25rem]"
+            >Email</label
+          >
+          <input
+            pInputText
+            id="email"
+            type="email"
+            aria-describedby="email-help"
+            class="p-3 rounded-lg outline-none border-[0.5px] border-main-color"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="phone" class="text-text-color sm:text-[1.25rem]"
+            >Phone number</label
+          >
+          <input
+            pInputText
+            id="phone"
+            type="tel"
+            aria-describedby="phone-help"
+            class="p-3 w-full rounded-lg outline-none border-[0.5px] border-main-color"
+          />
+        </div>
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="subject" class="text-text-color sm:text-[1.25rem]"
+          >Subject</label
+        >
+        <input
+          pInputText
+          id="subject"
+          type="text"
+          aria-describedby="subject-help"
+          class="p-3 rounded-lg outline-none border-[0.5px] border-main-color"
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="message" class="text-text-color sm:text-[1.25rem]"
+          >Message</label
+        >
+        <textarea
+          rows="5"
+          cols="30"
+          pTextarea
+          class="p-3 rounded-lg outline-none border-[0.5px] border-main-color resize-y"
+        ></textarea>
+      </div>
+
+      <div class="card flex items-center gap-1">
+        <p-checkbox value="accpet-terms" inputId="terms" />
+
+        <label for="terms" class="ms-2 text-secText-color sm:text-[1.125rem]"
+          >I accept the terms</label
+        >
+      </div>
+      <button type="button" class="main-btn w-fit px-28 mx-auto sm:mx-0">
+        Submit
+      </button>
+    </div>
+  </form>
+</section>
